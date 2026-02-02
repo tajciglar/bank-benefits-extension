@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Card Benefits</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>💳 Ugodnosti kartic</h1>
+      <p class="subtitle">Izberite svoje banke</p>
+    </div>
+    
+    <div class="content">
+      <div class="bank-list" id="bankList">
+        <!-- Banks will be dynamically added here -->
+      </div>
+      
+      <div class="info-section">
+        <p class="info-text">
+          ℹ️ Ko obiščete spletno stran z ugodnostjo, se bo prikazalo obvestilo s popustno kodo.
+        </p>
+      </div>
+      
+      <div class="stats-section" id="statsSection">
+        <div class="stat-item">
+          <span class="stat-number" id="benefitCount">0</span>
+          <span class="stat-label">ugodnosti na voljo</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <button class="btn-secondary" id="viewAllBenefits">Preglej vse ugodnosti</button>
+    </div>
+  </div>
+  
+  <!-- All Benefits Modal -->
+  <div class="modal" id="benefitsModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Vse ugodnosti</h2>
+        <button class="close-modal" id="closeModal">×</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Benefits will be listed here -->
+      </div>
+    </div>
+  </div>
+  
+  <script src="benefits.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
