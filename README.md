@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Bank Card Benefits Notifier Extension
 
 Browser extension that automatically notifies you about available discounts when you visit supported websites. Users can select which banks they have cards from, and the extension will only show relevant benefits.
@@ -179,7 +178,3 @@ Created for Slovenian bank card users to help them save money with available ben
 ---
 
 **Note**: Always verify discount codes on the merchant's website and read the terms and conditions before making a purchase.
-=======
-# bank-benefits-extension
-Browser extension that notifies users about bank card discounts
->>>>>>> 9c7b576f0f5fa3c75004a86c3e0030e5f1de6e23
