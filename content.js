@@ -130,12 +130,24 @@ function showBenefitNotification(benefits) {
 
 // Initialize
 async function init() {
+  // Only show notification once per domain per browser session.
+  // sessionStorage is scoped to the tab and cleared when the tab is closed,
+  // so users get notified again on their next visit.
+  const sessionKey = `benefit-shown:${getCurrentDomain()}`;
+  if (sessionStorage.getItem(sessionKey)) {
+    return;
+  }
+
   // Fetch benefits database from background script
   const response = await chrome.runtime.sendMessage({ action: 'getBenefits' });
   BENEFITS_DATABASE = response.benefits;
-  
+
   // Check for benefits on page load
-  checkForBenefits();
+  await checkForBenefits();
+
+  // Mark this domain as notified for the session so subsequent page
+  // navigations on the same site don't trigger another notification.
+  sessionStorage.setItem(sessionKey, '1');
 }
 
 // Run when page is loaded
