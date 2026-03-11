@@ -1,5 +1,7 @@
 // content.js - Runs on every webpage to check for benefits
 
+const EXT = typeof browser !== 'undefined' ? browser : chrome;
+
 // Load benefits database
 let BENEFITS_DATABASE = {};
 
@@ -13,7 +15,7 @@ async function checkForBenefits() {
   const currentDomain = getCurrentDomain();
   
   // Get user's selected banks from storage
-  const result = await chrome.storage.sync.get(['selectedBanks']);
+  const result = await EXT.storage.sync.get(['selectedBanks']);
   const selectedBanks = result.selectedBanks || [];
   
   if (selectedBanks.length === 0) {
@@ -139,7 +141,7 @@ async function init() {
   }
 
   // Fetch benefits database from background script
-  const response = await chrome.runtime.sendMessage({ action: 'getBenefits' });
+  const response = await EXT.runtime.sendMessage({ action: 'getBenefits' });
   BENEFITS_DATABASE = response.benefits;
 
   // Check for benefits on page load

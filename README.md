@@ -12,26 +12,38 @@ Browser extension that automatically notifies you about available discounts when
 
 ## Installation
 
-### For Chrome/Edge/Brave
+### For Chrome/Edge/Brave/Opera
 
 1. Download or clone this repository
 2. Open your browser and navigate to:
    - **Chrome**: `chrome://extensions/`
    - **Edge**: `edge://extensions/`
    - **Brave**: `brave://extensions/`
+   - **Opera**: `opera://extensions`
 
 3. Enable "Developer mode" (toggle in top-right corner)
 4. Click "Load unpacked"
-5. Select the `discount-notifier-extension` folder
+5. Select the `bank-benefits-extension` folder (repo root)
 6. The extension is now installed! 🎉
 
-### For Firefox
+### For Firefox (Temporary Load)
 
 1. Download or clone this repository
 2. Navigate to `about:debugging#/runtime/this-firefox`
 3. Click "Load Temporary Add-on"
-4. Select any file from the `discount-notifier-extension` folder
+4. Select any file from the `bank-benefits-extension` folder (repo root)
 5. The extension is now installed! 🎉
+
+**Permanent Firefox install**: package and sign the add-on (AMO). Keep the `browser_specific_settings.gecko.id` value in `manifest.json` aligned with your published add-on ID.
+
+### For Safari (macOS)
+
+Safari requires converting the extension to a Safari Web Extension using Xcode.
+
+1. Install Xcode
+2. Run `xcrun safari-web-extension-converter .` from the repo root
+3. Open the generated Xcode project
+4. Build and run the app target to enable the extension in Safari
 
 ## Usage
 
@@ -91,6 +103,27 @@ const BENEFITS_DATABASE = {
 };
 ```
 
+## Scraping Benefits (Optional)
+
+You can scrape bank benefit pages into a JSON/JS file and then merge into `benefits.js`.
+
+1. Add your bank benefit URLs and selectors to `scripts/sources.json` (see `scripts/sources.example.json`).
+2. Install Python dependencies:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r scripts/requirements.txt
+```
+
+3. Run the scraper:
+
+```bash
+python scripts/scrape_benefits.py --config scripts/sources.json --output scripts/benefits.json
+```
+
+Use `--format js` to output `const BENEFITS_DATABASE = ...` for easier manual merge.
+
 ### Benefit Object Structure
 
 - `merchant`: Name of the merchant/store
@@ -103,7 +136,7 @@ const BENEFITS_DATABASE = {
 ## File Structure
 
 ```
-discount-notifier-extension/
+bank-benefits-extension/
 ├── manifest.json          # Extension configuration
 ├── background.js          # Service worker
 ├── benefits.js            # Benefits database
@@ -112,6 +145,7 @@ discount-notifier-extension/
 ├── popup.html            # Extension popup HTML
 ├── popup.css             # Extension popup styles
 ├── popup.js              # Extension popup logic
+├── scripts/              # Scraper tools (optional)
 ├── icons/                # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
@@ -140,6 +174,7 @@ discount-notifier-extension/
 - ✅ Brave
 - ✅ Firefox 109+
 - ✅ Opera
+- ⚠️ Safari (via Xcode conversion)
 
 ## Contributing
 

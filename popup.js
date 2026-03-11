@@ -1,22 +1,19 @@
 // popup.js - Logic for the extension popup
 
+const EXT = typeof browser !== 'undefined' ? browser : chrome;
+
 // Get available banks from benefits database
 const availableBanks = Object.keys(BENEFITS_DATABASE);
 
 // Load selected banks from storage
 async function loadSelectedBanks() {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get(['selectedBanks'], (result) => {
-      resolve(result.selectedBanks || []);
-    });
-  });
+  const result = await EXT.storage.sync.get(['selectedBanks']);
+  return result.selectedBanks || [];
 }
 
 // Save selected banks to storage
 async function saveSelectedBanks(banks) {
-  return new Promise((resolve) => {
-    chrome.storage.sync.set({ selectedBanks: banks }, resolve);
-  });
+  await EXT.storage.sync.set({ selectedBanks: banks });
 }
 
 // Render bank list

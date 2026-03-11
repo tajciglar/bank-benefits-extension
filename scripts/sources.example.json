@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "bank": "OTP Banka",
+      "url": "https://www.example.com/benefits",
+      "entry_selector": ".benefit-card",
+      "fields": {
+        "merchant": ".benefit-merchant",
+        "discount": ".benefit-discount",
+        "code": ".benefit-code",
+        "conditions": ".benefit-terms",
+        "merchant_link": ".benefit-merchant a@href"
+      },
+      "defaults": {
+        "link": "https://www.example.com/benefits",
+        "domains": []
+      }
+    }
+  ]
+}
