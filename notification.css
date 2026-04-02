@@ -5,73 +5,88 @@
   top: 20px;
   right: 20px;
   width: 380px;
-  max-width: calc(100vw - 40px);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: calc(100vw - 32px);
+  border: 1px solid rgba(22, 54, 43, 0.12);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(13, 122, 95, 0.08), transparent 34%),
+    linear-gradient(180deg, #fffef9 0%, #f5f0e7 100%);
+  color: #1f2a24;
+  box-shadow: 0 24px 60px rgba(23, 29, 25, 0.22);
   z-index: 999999;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   opacity: 1;
-  transition: opacity 0.3s ease;
-  animation: slideIn 0.4s ease-out;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  animation: slideIn 0.32s ease-out;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateX(400px);
+    transform: translateY(-12px) translateX(20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0) translateX(0);
     opacity: 1;
   }
 }
 
 .notification-header {
   display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 14px;
 }
 
-.notification-icon {
-  font-size: 24px;
-  margin-right: 10px;
+.notification-eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(13, 122, 95, 0.1);
+  color: #0a5f49;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .notification-title {
-  flex: 1;
-  font-size: 18px;
-  font-weight: 600;
+  display: block;
+  font-size: 22px;
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 .notification-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 28px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(22, 54, 43, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #1f2a24;
+  font-size: 24px;
+  line-height: 1;
   cursor: pointer;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
 }
 
-.notification-close:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.notification-close:focus-visible,
+.copy-button:focus-visible,
+.benefit-link:focus-visible {
+  outline: 2px solid rgba(13, 122, 95, 0.34);
+  outline-offset: 2px;
 }
 
 .notification-body {
-  padding: 16px 20px;
+  padding: 0 18px 18px;
 }
 
 .benefit-item {
-  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid rgba(22, 54, 43, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.74);
 }
 
 .benefit-item:last-child {
@@ -79,95 +94,112 @@
 }
 
 .benefit-divider {
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 12px;
 }
 
 .benefit-bank {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  opacity: 0.9;
   margin-bottom: 6px;
+  color: #0a5f49;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .benefit-discount {
   font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  line-height: 1.4;
+  line-height: 1.45;
+  font-weight: 700;
 }
 
 .benefit-code {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin: 8px 0;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed rgba(13, 122, 95, 0.34);
+  border-radius: 14px;
+  background: #f7fcfa;
 }
 
 .code-label {
+  color: #5f6f66;
   font-size: 13px;
-  opacity: 0.9;
 }
 
 .code-value {
   flex: 1;
-  font-family: 'Courier New', monospace;
+  color: #0a5f49;
+  font-family: "Courier New", monospace;
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
+}
+
+.copy-button,
+.benefit-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
 .copy-button {
-  background: rgba(255, 255, 255, 0.25);
   border: none;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
+  background: linear-gradient(135deg, #0d7a5f 0%, #095b46 100%);
+  color: #f7fff9;
 }
 
-.copy-button:hover {
-  background: rgba(255, 255, 255, 0.35);
+.copy-button:hover,
+.benefit-link:hover {
   transform: translateY(-1px);
 }
 
 .copy-button.copied {
-  background: rgba(76, 175, 80, 0.9);
+  background: #2c8f58;
 }
 
 .benefit-conditions {
+  margin-top: 10px;
+  color: #56655c;
   font-size: 13px;
-  opacity: 0.85;
-  line-height: 1.4;
-  margin-top: 6px;
+  line-height: 1.5;
 }
 
-/* Mobile responsive */
+.benefit-actions {
+  margin-top: 12px;
+}
+
+.benefit-link {
+  border: 1px solid rgba(22, 54, 43, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f2a24;
+}
+
 @media (max-width: 480px) {
   .bank-benefit-notification {
-    width: calc(100vw - 32px);
-    right: 16px;
-    top: 16px;
+    top: 14px;
+    right: 14px;
+    width: calc(100vw - 28px);
   }
-  
-  .notification-header {
-    padding: 14px 16px;
+
+  .notification-title {
+    font-size: 20px;
   }
-  
-  .notification-body {
-    padding: 14px 16px;
+
+  .benefit-code {
+    flex-wrap: wrap;
   }
-  
-  .benefit-discount {
-    font-size: 15px;
+
+  .copy-button {
+    width: 100%;
   }
 }

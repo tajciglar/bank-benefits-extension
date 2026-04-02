@@ -64,9 +64,11 @@ function showBenefitNotification(benefits) {
   // Build notification content
   let content = `
     <div class="notification-header">
-      <span class="notification-icon">💳</span>
-      <span class="notification-title">Popust na voljo!</span>
-      <button class="notification-close" id="close-notification">×</button>
+      <div>
+        <div class="notification-eyebrow">Bank benefit found</div>
+        <span class="notification-title">Popust na voljo</span>
+      </div>
+      <button class="notification-close" id="close-notification" aria-label="Zapri obvestilo">×</button>
     </div>
     <div class="notification-body">
   `;
@@ -80,10 +82,15 @@ function showBenefitNotification(benefits) {
           <div class="benefit-code">
             <span class="code-label">Koda:</span>
             <span class="code-value" id="code-${index}">${benefit.code}</span>
-            <button class="copy-button" data-code="${benefit.code}" data-index="${index}">Kopiraj</button>
+            <button class="copy-button" type="button" data-code="${benefit.code}" data-index="${index}">Kopiraj</button>
           </div>
         ` : ''}
         ${benefit.conditions ? `<div class="benefit-conditions">${benefit.conditions}</div>` : ''}
+        ${benefit.link ? `
+          <div class="benefit-actions">
+            <a class="benefit-link" href="${benefit.link}" target="_blank" rel="noopener noreferrer">Odpri vir</a>
+          </div>
+        ` : ''}
       </div>
     `;
   });

@@ -5,6 +5,22 @@ const EXT = typeof browser !== 'undefined' ? browser : chrome;
 // Get available banks from benefits database
 const availableBanks = Object.keys(BENEFITS_DATABASE);
 
+function pluralize(count, singular, plural) {
+  return count === 1 ? singular : plural;
+}
+
+function formatMerchantName(value) {
+  if (!value) {
+    return 'Neznan ponudnik';
+  }
+
+  return value
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Load selected banks from storage
 async function loadSelectedBanks() {
   const result = await EXT.storage.sync.get(['selectedBanks']);
@@ -27,15 +43,17 @@ async function renderBankList() {
     const benefitCount = BENEFITS_DATABASE[bank].length;
     const isSelected = selectedBanks.includes(bank);
     
-    const bankItem = document.createElement('div');
+    const bankItem = document.createElement('button');
+    bankItem.type = 'button';
     bankItem.className = `bank-item ${isSelected ? 'selected' : ''}`;
     bankItem.dataset.bank = bank;
+    bankItem.setAttribute('aria-pressed', String(isSelected));
     
     bankItem.innerHTML = `
       <div class="bank-checkbox"></div>
       <div class="bank-info">
         <div class="bank-name">${bank}</div>
-        <div class="bank-benefits-count">${benefitCount} ${benefitCount === 1 ? 'ugodnost' : 'ugodnosti'}</div>
+        <div class="bank-benefits-count">${benefitCount} ${pluralize(benefitCount, 'ugodnost', 'ugodnosti')}</div>
       </div>
     `;
     
@@ -72,6 +90,19 @@ async function updateStats() {
   });
   
   document.getElementById('benefitCount').textContent = totalBenefits;
+  document.getElementById('selectedBankCount').textContent = selectedBanks.length;
+  document.getElementById('availableBankCount').textContent = availableBanks.length;
+  document.getElementById('selectedBenefitCount').textContent = totalBenefits;
+}
+
+async function selectAllBanks() {
+  await saveSelectedBanks([...availableBanks]);
+  renderBankList();
+}
+
+async function clearAllBanks() {
+  await saveSelectedBanks([]);
+  renderBankList();
 }
 
 // Show all benefits modal
@@ -79,8 +110,12 @@ async function showAllBenefits() {
   const selectedBanks = await loadSelectedBanks();
   const modal = document.getElementById('benefitsModal');
   const modalBody = document.getElementById('modalBody');
+  const modalSubtitle = document.getElementById('modalSubtitle');
   
   modalBody.innerHTML = '';
+  modalSubtitle.textContent = selectedBanks.length === 0
+    ? 'Ni izbranih bank'
+    : `${selectedBanks.length} ${pluralize(selectedBanks.length, 'izbrana banka', 'izbrane banke')}`;
   
   if (selectedBanks.length === 0) {
     modalBody.innerHTML = `
@@ -103,7 +138,7 @@ async function showAllBenefits() {
       benefits.forEach(benefit => {
         groupHTML += `
           <div class="benefit-card">
-            <div class="benefit-merchant">${benefit.merchant}</div>
+            <div class="benefit-merchant">${formatMerchantName(benefit.merchant)}</div>
             <div class="benefit-discount">${benefit.discount}</div>
             ${benefit.code ? `
               <div class="benefit-code-display">
@@ -137,6 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.getElementById('viewAllBenefits').addEventListener('click', showAllBenefits);
   document.getElementById('closeModal').addEventListener('click', closeModal);
+  document.getElementById('selectAllBanks').addEventListener('click', selectAllBanks);
+  document.getElementById('clearAllBanks').addEventListener('click', clearAllBanks);
   
   // Close modal when clicking outside
   document.getElementById('benefitsModal').addEventListener('click', (e) => {

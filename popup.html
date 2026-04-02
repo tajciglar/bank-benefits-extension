@@ -9,31 +9,56 @@
 <body>
   <div class="popup-container">
     <div class="header">
-      <h1>💳 Ugodnosti kartic</h1>
-      <p class="subtitle">Izberite svoje banke</p>
+      <div class="eyebrow">Bank benefits notifier</div>
+      <h1>Ugodnosti kartic</h1>
+      <p class="subtitle">Izberite banke in spremljajte popuste na straneh, ki jih obiskujete.</p>
+      <div class="header-stats">
+        <div class="header-stat">
+          <span class="header-stat-value" id="selectedBankCount">0</span>
+          <span class="header-stat-label">izbranih bank</span>
+        </div>
+        <div class="header-stat">
+          <span class="header-stat-value" id="benefitCount">0</span>
+          <span class="header-stat-label">aktivnih ugodnosti</span>
+        </div>
+      </div>
     </div>
     
     <div class="content">
+      <div class="section-heading">
+        <div>
+          <h2>Moje banke</h2>
+          <p>Označite banke, katerih kartice uporabljate.</p>
+        </div>
+        <div class="action-row">
+          <button class="text-button" id="selectAllBanks" type="button">Izberi vse</button>
+          <button class="text-button" id="clearAllBanks" type="button">Počisti</button>
+        </div>
+      </div>
+
       <div class="bank-list" id="bankList">
         <!-- Banks will be dynamically added here -->
       </div>
       
       <div class="info-section">
-        <p class="info-text">
-          ℹ️ Ko obiščete spletno stran z ugodnostjo, se bo prikazalo obvestilo s popustno kodo.
-        </p>
+        <div class="info-badge">Kako deluje</div>
+        <p class="info-text">Ko obiščete spletno stran z ugodnostjo, se zgoraj desno prikaže obvestilo s popustom in morebitno kodo.</p>
       </div>
       
       <div class="stats-section" id="statsSection">
         <div class="stat-item">
-          <span class="stat-number" id="benefitCount">0</span>
-          <span class="stat-label">ugodnosti na voljo</span>
+          <span class="stat-number" id="availableBankCount">0</span>
+          <span class="stat-label">bank v imeniku</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="selectedBenefitCount">0</span>
+          <span class="stat-label">ugodnosti za izbrane banke</span>
         </div>
       </div>
     </div>
     
     <div class="footer">
-      <button class="btn-secondary" id="viewAllBenefits">Preglej vse ugodnosti</button>
+      <button class="btn-secondary" id="viewAllBenefits" type="button">Preglej vse ugodnosti</button>
     </div>
   </div>
   
@@ -41,8 +66,11 @@
   <div class="modal" id="benefitsModal" style="display: none;">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Vse ugodnosti</h2>
-        <button class="close-modal" id="closeModal">×</button>
+        <div>
+          <h2>Vse ugodnosti</h2>
+          <p class="modal-subtitle" id="modalSubtitle">Pregled po izbranih bankah</p>
+        </div>
+        <button class="close-modal" id="closeModal" type="button" aria-label="Zapri">×</button>
       </div>
       <div class="modal-body" id="modalBody">
         <!-- Benefits will be listed here -->
