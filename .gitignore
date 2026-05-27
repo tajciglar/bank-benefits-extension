@@ -11,3 +11,5 @@ scripts/sources.json
 .env
 .env.*
 node_modules/
+
+.impeccable.md
