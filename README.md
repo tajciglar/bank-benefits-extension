@@ -56,14 +56,22 @@ Then build and run the generated Xcode project.
 
 | Source | Benefits |
 |--------|----------|
-| OTP Banka | 29 (scraped from otpbanka.si) |
-| NLB | 3 |
+| OTP Banka | 29 (otpbanka.si) |
+| NLB | 24 (nlb.si) |
+| Delavska hranilnica | 15 (dh.si) |
+| BKS Bank | 11 (bksbank.si, tier-aware) |
+| Intesa Sanpaolo | 3 |
+| Addiko Bank | 1 |
+| Sparkasse / Diners D-TOREK | 27 (sparkassepay.si) |
+| Gorenjska banka | 1 |
 | Visa Classic | 9 |
 | Visa Gold | 22 |
 | Visa Platinum | 24 |
 | Visa Signature | 25 |
 | Visa Infinite | 25 |
 | Visa Business | 11 |
+| Mastercard World | 30 |
+| Mastercard World Elite | 31 |
 
 ## Adding benefits
 
