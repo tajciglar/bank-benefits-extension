@@ -155,7 +155,6 @@ function el(tag, attrs, ...children) {
     for (const [key, value] of Object.entries(attrs)) {
       if (key === 'className') node.className = value;
       else if (key === 'textContent') node.textContent = value;
-      else if (key === 'innerHTML') node.innerHTML = value;
       else node.setAttribute(key, value);
     }
   }
@@ -169,7 +168,7 @@ function el(tag, attrs, ...children) {
 async function renderBankList() {
   const selectedBanks = await loadSelectedBanks();
   const bankList = document.getElementById('bankList');
-  bankList.innerHTML = '';
+  bankList.replaceChildren();
 
   for (const group of groupedBanks()) {
     bankList.appendChild(
@@ -242,7 +241,7 @@ async function showAllBenefits() {
   const modalBody = document.getElementById('modalBody');
   const modalSubtitle = document.getElementById('modalSubtitle');
 
-  modalBody.innerHTML = '';
+  modalBody.replaceChildren();
   modalSubtitle.textContent =
     selectedBanks.length === 0
       ? t('modal.empty.subtitle')
