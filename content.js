@@ -80,11 +80,10 @@ function showBenefitNotification(benefits) {
     textContent: '×'
   });
 
+  // The header is now a tight attribution row: a tiny "ugodnost" mark + close.
+  // Each benefit block below names its own bank.
   const header = el('div', { className: 'notification-header' },
-    el('div', null,
-      el('div', { className: 'notification-eyebrow', textContent: 'Bank benefit found' }),
-      el('span', { className: 'notification-title', textContent: 'Popust na voljo' })
-    ),
+    el('div', { className: 'notification-eyebrow', textContent: 'Ugodnost' }),
     closeBtn
   );
 

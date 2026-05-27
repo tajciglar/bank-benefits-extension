@@ -116,6 +116,7 @@ See `scripts/sources.example.json` for the config format.
 ├── popup.html/css/js      # Extension popup UI
 ├── scripts/               # Build and scraper tools
 ├── icons/                 # Extension icons
+├── fonts/                 # Self-hosted Fraunces + Albert Sans woff2 files
 └── dist/                  # Generated browser builds (gitignored)
 ```
 

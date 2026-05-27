@@ -1,18 +1,58 @@
-/* popup.css - Styles for the extension popup */
+@import url('./fonts/fonts.css');
+
+/* ─────────────────────────────────────────────────────────────
+   Tokens — warm neutrals + a single confident amber accent.
+   Light and dark are distinct palettes, not inversions.
+   ───────────────────────────────────────────────────────────── */
 
 :root {
-  --bg: #f4f1ea;
-  --panel: #fffdf8;
-  --panel-strong: #ffffff;
-  --surface: #f7f3ec;
-  --surface-strong: #efe5d6;
-  --text: #1f2a24;
-  --muted: #5f6f66;
-  --border: #ddd3c4;
-  --accent: #0d7a5f;
-  --accent-strong: #095b46;
-  --accent-soft: #d9efe7;
-  --shadow: 0 16px 40px rgba(38, 42, 35, 0.14);
+  color-scheme: light dark;
+
+  /* Type */
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-sans: "Albert Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+
+  /* Spacing scale — geometric, with breathing room */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 22px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Light palette — warm off-white paper, espresso ink */
+  --bg: oklch(98% 0.006 80);
+  --surface: oklch(99.2% 0.004 80);
+  --surface-sunk: oklch(96% 0.008 75);
+  --ink: oklch(22% 0.015 60);
+  --ink-soft: oklch(38% 0.012 60);
+  --ink-mute: oklch(58% 0.012 65);
+  --rule: oklch(88% 0.012 70);
+  --rule-soft: oklch(93% 0.008 70);
+  --accent: oklch(58% 0.16 55);             /* burnt amber */
+  --accent-ink: oklch(40% 0.14 45);
+  --accent-wash: oklch(95% 0.04 70);
+  --selected-mark: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark palette — its own composition, not inverted.
+       Deeper warm charcoal with a softer amber that holds up at low brightness. */
+    --bg: oklch(17% 0.01 50);
+    --surface: oklch(20% 0.012 50);
+    --surface-sunk: oklch(14% 0.01 50);
+    --ink: oklch(94% 0.012 80);
+    --ink-soft: oklch(78% 0.012 70);
+    --ink-mute: oklch(60% 0.012 65);
+    --rule: oklch(28% 0.012 55);
+    --rule-soft: oklch(24% 0.01 50);
+    --accent: oklch(76% 0.13 70);             /* warmer amber for dark */
+    --accent-ink: oklch(84% 0.11 75);
+    --accent-wash: oklch(26% 0.04 60);
+    --selected-mark: var(--accent);
+  }
 }
 
 * {
@@ -21,14 +61,24 @@
   box-sizing: border-box;
 }
 
-body {
-  width: 400px;
-  min-height: 540px;
-  font-family: Georgia, "Times New Roman", serif;
-  background:
-    radial-gradient(circle at top left, rgba(13, 122, 95, 0.14), transparent 40%),
-    linear-gradient(180deg, #f9f6ef 0%, #f1ebe0 100%);
-  color: var(--text);
+::selection {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+
+html, body {
+  /* Browser popups have a hard upper bound (Chrome: 800px tall, 800px wide).
+     We use 380px wide for a comfortable reading measure. */
+  width: 380px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  font-feature-settings: "ss01", "cv11";   /* nicer alts where supported */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .popup-container {
@@ -37,363 +87,508 @@ body {
   min-height: 540px;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Header — large editorial title, no eyebrow, no stat tiles.
+   The title sits in a generous block of negative space.
+   ───────────────────────────────────────────────────────────── */
+
 .header {
-  padding: 22px 20px 18px;
-  border-bottom: 1px solid rgba(95, 111, 102, 0.12);
+  padding: var(--space-6) var(--space-5) var(--space-5);
 }
 
+/* Old eyebrow becomes a single hairline label, not a pill */
 .eyebrow {
-  display: inline-block;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: rgba(13, 122, 95, 0.1);
-  color: var(--accent-strong);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: var(--space-5);
+  /* No background, no pill — just a confident label */
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  background: var(--ink-mute);
 }
 
 .header h1 {
-  font-size: 31px;
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* Optical size: lean into Fraunces' display feel at large size */
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  font-size: 40px;
+  line-height: 0.98;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+}
+
+.header h1 em {
+  font-style: italic;
+  font-weight: 400;
+  /* Italics get a touch more soft warmth */
+  font-variation-settings: "opsz" 144, "SOFT" 100;
+  color: var(--accent-ink);
 }
 
 .subtitle {
-  margin-top: 10px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 14px;
+  margin-top: var(--space-3);
+  max-width: 30ch;
+  color: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
   line-height: 1.5;
 }
 
+/* Stat tiles replaced by a single inline line — no card-in-card */
 .header-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 18px;
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink-mute);
 }
 
 .header-stat {
-  padding: 14px;
-  border: 1px solid rgba(95, 111, 102, 0.12);
-  border-radius: 16px;
-  background: rgba(255, 253, 248, 0.72);
-  backdrop-filter: blur(6px);
+  /* The old tile chrome is gone. Stats are just text now. */
+  display: inline-flex;
+  gap: 4px;
+  align-items: baseline;
 }
 
 .header-stat-value {
-  display: block;
-  font-size: 28px;
-  line-height: 1;
-  color: var(--accent-strong);
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 14;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .header-stat-label {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
+  font-weight: 400;
 }
+
+.header-stat + .header-stat::before {
+  content: "·";
+  margin-right: var(--space-2);
+  color: var(--ink-mute);
+  font-weight: 400;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Content area — bank list grouped by type
+   ───────────────────────────────────────────────────────────── */
 
 .content {
   flex: 1;
-  padding: 18px 20px 20px;
+  padding: 0 var(--space-5) var(--space-5);
   overflow-y: auto;
+  /* Subtle scrollbar that doesn't shout */
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.content::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 999px;
+}
+
+/* Top rule separating header from content — hairline, not heavy */
+.content::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--rule-soft);
+  margin-bottom: var(--space-5);
 }
 
 .section-heading {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-4);
+  gap: var(--space-3);
 }
 
 .section-heading h2 {
-  font-size: 18px;
-  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 30;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
 }
 
 .section-heading p {
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
-  line-height: 1.4;
+  /* Subtitle below H2 — dropped from old design. Hide via JS no longer needed. */
+  display: none;
 }
 
 .action-row {
   display: flex;
-  gap: 8px;
+  gap: var(--space-3);
   flex-shrink: 0;
 }
 
 .text-button {
-  padding: 9px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--panel-strong);
-  color: var(--text);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-mute);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  letter-spacing: 0.005em;
+  transition: color 140ms ease;
+  /* Text-link feel with a subtle underline on hover */
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 }
 
-.text-button:hover {
-  transform: translateY(-1px);
-  border-color: var(--accent);
-  background: #fefcf6;
+.text-button:hover,
+.text-button:focus-visible {
+  color: var(--ink);
+  text-decoration-color: var(--ink-soft);
 }
+
+.text-button + .text-button::before {
+  content: "/";
+  margin-right: var(--space-3);
+  color: var(--rule);
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Bank list — typographic list with subtle group dividers.
+   No cards, no checkboxes-as-decoration. A bank is just a row
+   of text with a marker that fills in when selected.
+   ───────────────────────────────────────────────────────────── */
 
 .bank-list {
+  list-style: none;
+  margin: 0 0 var(--space-5);
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 18px;
+}
+
+.bank-group-label {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: var(--space-5) 0 var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bank-group-label:first-child {
+  margin-top: 0;
+}
+
+.bank-group-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule-soft);
 }
 
 .bank-item {
   appearance: none;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  background: none;
+  border: 0;
   width: 100%;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: rgba(255, 253, 248, 0.88);
-  box-shadow: 0 8px 18px rgba(43, 49, 40, 0.05);
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule-soft);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-  user-select: none;
   text-align: left;
+  font-family: inherit;
+  color: var(--ink);
+  transition: color 120ms ease, padding 220ms cubic-bezier(0.2, 0.6, 0.2, 1);
 }
 
-.bank-item:focus-visible,
-.text-button:focus-visible,
-.btn-secondary:focus-visible,
-.close-modal:focus-visible {
-  outline: 2px solid rgba(13, 122, 95, 0.34);
-  outline-offset: 2px;
+.bank-item:last-child {
+  border-bottom: 0;
 }
 
 .bank-item:hover {
-  transform: translateY(-2px);
-  border-color: #bfb09d;
-  box-shadow: 0 12px 24px rgba(43, 49, 40, 0.09);
+  /* No lift transform — instead, the marker peeks in */
+  padding-left: 4px;
 }
 
-.bank-item.selected {
-  border-color: var(--accent);
-  background: linear-gradient(180deg, #f8fffb 0%, #ecfaf4 100%);
+.bank-item:focus-visible {
+  outline: none;
 }
 
+.bank-item:focus-visible .bank-name {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* The marker — a small filled circle that animates in on selection */
 .bank-checkbox {
-  width: 24px;
-  height: 24px;
-  border: 1.5px solid #b6bcaf;
-  border-radius: 8px;
-  background: #fffdf8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.18s ease;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--rule);
+  transform: scale(0.6);
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms ease;
+  align-self: center;
+  justify-self: center;
+  margin-top: 1px;
 }
 
-.bank-checkbox::after {
-  content: " ";
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--accent);
-  transform: scale(0);
-  transition: transform 0.18s ease;
+.bank-item:hover .bank-checkbox {
+  background: var(--ink-mute);
+  transform: scale(0.8);
 }
 
 .bank-item.selected .bank-checkbox {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.bank-item.selected .bank-checkbox::after {
+  background: var(--selected-mark);
   transform: scale(1);
 }
 
 .bank-info {
-  flex: 1;
+  display: contents;
 }
 
 .bank-name {
-  font-size: 17px;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+.bank-item.selected .bank-name {
+  font-weight: 600;
 }
 
 .bank-benefits-count {
-  margin-top: 4px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 14;
+  font-weight: 500;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-mute);
+  /* Just the number, e.g. "29" — pluralized word is hidden, the column header
+     implies "ugodnosti" */
+  text-align: right;
 }
 
 .bank-item.selected .bank-benefits-count {
-  color: #356454;
+  color: var(--accent-ink);
 }
 
-.info-section {
-  margin-bottom: 16px;
-  padding: 16px;
-  border: 1px solid rgba(13, 122, 95, 0.14);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(217, 239, 231, 0.72) 0%, rgba(245, 250, 247, 0.96) 100%);
-}
+/* ─────────────────────────────────────────────────────────────
+   Info section + bottom stats: removed entirely.
+   The "kako deluje" copy lives in the title area instead.
+   These selectors are kept defensively in case popup.js sets them.
+   ───────────────────────────────────────────────────────────── */
 
-.info-badge {
-  display: inline-block;
-  margin-bottom: 8px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: rgba(13, 122, 95, 0.14);
-  color: var(--accent-strong);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.info-text {
-  color: #244337;
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
+.info-section,
 .stats-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  display: none;
 }
 
-.stat-item {
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: rgba(255, 253, 248, 0.88);
-}
-
-.stat-number {
-  display: block;
-  font-size: 26px;
-  line-height: 1;
-  color: var(--accent-strong);
-}
-
-.stat-label {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1.35;
-}
+/* ─────────────────────────────────────────────────────────────
+   Footer — text-link CTA with arrow, not a gradient pill
+   ───────────────────────────────────────────────────────────── */
 
 .footer {
-  padding: 16px 20px 20px;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border-top: 1px solid var(--rule-soft);
+  background: var(--surface-sunk);
 }
 
 .btn-secondary {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
   width: 100%;
-  padding: 14px 18px;
-  border: none;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
-  color: #f7fff9;
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
   cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  letter-spacing: -0.005em;
+  transition: color 140ms ease;
+}
+
+.btn-secondary::after {
+  content: "→";
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--ink-soft);
+  transition: transform 220ms cubic-bezier(0.2, 0.6, 0.2, 1), color 140ms ease;
 }
 
 .btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(7, 71, 54, 0.24);
+  color: var(--accent-ink);
 }
+
+.btn-secondary:hover::after {
+  transform: translateX(3px);
+  color: var(--accent);
+}
+
+.btn-secondary:focus-visible {
+  outline: none;
+}
+
+.btn-secondary:focus-visible::after {
+  color: var(--accent);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Modal — full-bleed inside the popup, not centered with backdrop.
+   Slides up from the bottom. Feels like flipping to a back page.
+   ───────────────────────────────────────────────────────────── */
 
 .modal {
   position: fixed;
   inset: 0;
-  padding: 12px;
-  background: rgba(24, 31, 27, 0.42);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 1000;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  animation: modal-slide 280ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes modal-slide {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal {
+    animation: none;
+  }
+  .bank-item, .btn-secondary, .btn-secondary::after, .bank-checkbox {
+    transition: none;
+  }
 }
 
 .modal-content {
-  width: 100%;
-  max-width: 500px;
-  max-height: 80vh;
-  border: 1px solid rgba(95, 111, 102, 0.14);
-  border-radius: 22px;
-  background: var(--panel);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 26px 60px rgba(24, 31, 27, 0.24);
+  flex: 1;
+  /* No box shadow, no border-radius — the modal is the page */
+  background: transparent;
+  max-height: none;
+  border: 0;
+  overflow: hidden;
 }
 
 .modal-header {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--rule-soft);
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(95, 111, 102, 0.12);
-  background: #fcfaf4;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 .modal-header h2 {
-  font-size: 24px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: "opsz" 144;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.018em;
 }
 
 .modal-subtitle {
-  margin-top: 6px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
+  margin-top: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink-mute);
 }
 
 .close-modal {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border);
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
-  background: white;
-  color: var(--text);
-  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-mute);
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
+}
+
+.close-modal:hover {
+  color: var(--ink);
+  background: var(--surface-sunk);
 }
 
 .modal-body {
-  padding: 20px;
-  overflow-y: auto;
   flex: 1;
+  padding: var(--space-4) var(--space-5) var(--space-6);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
 }
 
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 999px;
+}
+
+/* Benefits grouped by bank — bank name is a tiny eyebrow above each block */
+
 .benefit-group {
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .benefit-group:last-child {
@@ -401,80 +596,112 @@ body {
 }
 
 .benefit-group-title {
-  margin-bottom: 12px;
-  color: var(--accent-strong);
-  font-size: 18px;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .benefit-card {
-  margin-bottom: 12px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: white;
+  margin: 0 0 var(--space-4);
+  /* No border, no card chrome. A benefit is a typographic block. */
+  background: none;
+  border: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+.benefit-card:last-child {
+  margin-bottom: 0;
 }
 
 .benefit-merchant {
-  margin-bottom: 8px;
-  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 22;
   font-size: 16px;
-  font-weight: 700;
-  text-transform: capitalize;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  text-transform: none;   /* override old uppercase rule */
 }
 
 .benefit-discount {
-  color: #39463f;
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
 }
 
 .benefit-code-display {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 8px 10px;
-  border: 1px dashed rgba(13, 122, 95, 0.4);
-  border-radius: 12px;
-  background: #f7fcfa;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--accent-wash);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  align-self: flex-start;
+  width: max-content;
 }
 
 .code-label-small {
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 12px;
+  color: var(--ink-mute);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10.5px;
 }
 
 .code-value-small {
-  color: var(--accent-strong);
-  font-family: "Courier New", monospace;
-  font-size: 14px;
-  font-weight: 700;
+  color: var(--accent-ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "opsz" 14;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  font-feature-settings: "tnum";
 }
 
 .benefit-conditions-small {
-  margin-top: 10px;
-  color: var(--muted);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 13px;
+  margin-top: var(--space-1);
+  font-family: var(--font-sans);
+  font-size: 12px;
   line-height: 1.5;
+  color: var(--ink-mute);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Empty state — the rare moment we get to show personality
+   ───────────────────────────────────────────────────────────── */
+
 .empty-state {
-  padding: 36px 20px;
-  text-align: center;
-  color: var(--muted);
+  padding: var(--space-6) var(--space-4);
+  text-align: left;
 }
 
 .empty-state-icon {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
   font-size: 36px;
-  margin-bottom: 12px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--space-3);
 }
 
 .empty-state-text {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 28ch;
 }

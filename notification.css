@@ -1,205 +1,384 @@
-/* notification.css - Styles for the benefit notification */
+/* notification.css — In-page notification injected by content.js.
+   Uses system fonts (no @import) so we don't introduce FOUT on host pages.
+   Same warm/restrained design language as the popup. */
 
-.bank-benefit-notification {
+#bank-benefit-notification.bank-benefit-notification {
+  /* Reset everything the host page might have inherited */
+  all: initial;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", "Arial", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #221b14;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 380px;
+  bottom: 24px;
+  right: 24px;
+  width: 340px;
   max-width: calc(100vw - 32px);
-  border: 1px solid rgba(22, 54, 43, 0.12);
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at top right, rgba(13, 122, 95, 0.08), transparent 34%),
-    linear-gradient(180deg, #fffef9 0%, #f5f0e7 100%);
-  color: #1f2a24;
-  box-shadow: 0 24px 60px rgba(23, 29, 25, 0.22);
-  z-index: 999999;
-  font-family: "Segoe UI", Arial, sans-serif;
+
+  /* Warm paper card, no gradients, no radial glows */
+  background: #fdfaf3;
+  border: 1px solid rgba(60, 40, 20, 0.10);
+  border-radius: 10px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 16px 32px -16px rgba(40, 24, 8, 0.18),
+    0 2px 6px rgba(40, 24, 8, 0.06);
+
+  z-index: 2147483647;   /* one less than max — stay above most page chrome */
   opacity: 1;
-  transition: opacity 0.28s ease, transform 0.28s ease;
-  animation: slideIn 0.32s ease-out;
+  transform: translateY(0);
+  transition:
+    opacity 220ms ease,
+    transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: bbn-slideUp 380ms cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes slideIn {
+@keyframes bbn-slideUp {
   from {
-    transform: translateY(-12px) translateX(20px);
     opacity: 0;
+    transform: translateY(12px);
   }
   to {
-    transform: translateY(0) translateX(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.notification-header {
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification.bank-benefit-notification {
+    background: #1f1a14;
+    color: #f0e8da;
+    border-color: rgba(255, 230, 200, 0.10);
+    box-shadow:
+      0 1px 0 rgba(255, 230, 200, 0.04) inset,
+      0 16px 32px -16px rgba(0, 0, 0, 0.6),
+      0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bank-benefit-notification.bank-benefit-notification {
+    animation: none;
+    transition: opacity 200ms ease;
+  }
+}
+
+/* The old "Bank benefit found / Popust na voljo" eyebrow + heading
+   is removed entirely. The bank attribution next to the close button
+   is the only chrome. */
+
+#bank-benefit-notification .notification-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 18px 18px 14px;
+  padding: 12px 14px 0;
+  margin: 0;
 }
 
-.notification-eyebrow {
-  display: inline-block;
-  margin-bottom: 6px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(13, 122, 95, 0.1);
-  color: #0a5f49;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+#bank-benefit-notification .notification-eyebrow {
+  /* Repurposed as a tiny attribution row */
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: #9c8770;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  margin: 0;
 }
 
-.notification-title {
-  display: block;
-  font-size: 22px;
-  line-height: 1.1;
-  font-weight: 700;
+#bank-benefit-notification .notification-eyebrow::before {
+  /* Small custom mark — a tiny filled lozenge, the brand seal */
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  background: #c97a2b;
 }
 
-.notification-close {
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(22, 54, 43, 0.12);
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .notification-eyebrow {
+    color: #b39f86;
+  }
+  #bank-benefit-notification .notification-eyebrow::before {
+    background: #e8a455;
+  }
+}
+
+#bank-benefit-notification .notification-title {
+  /* The old "Popust na voljo" big title — hidden, redundant once
+     the merchant + discount lead the body. */
+  display: none;
+}
+
+#bank-benefit-notification .notification-close {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.86);
-  color: #1f2a24;
-  font-size: 24px;
+  color: #9c8770;
+  font-size: 18px;
   line-height: 1;
   cursor: pointer;
+  transition: color 140ms ease, background 140ms ease;
+  font-family: inherit;
 }
 
-.notification-close:focus-visible,
-.copy-button:focus-visible,
-.benefit-link:focus-visible {
-  outline: 2px solid rgba(13, 122, 95, 0.34);
+#bank-benefit-notification .notification-close:hover {
+  color: #221b14;
+  background: rgba(60, 40, 20, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .notification-close {
+    color: #b39f86;
+  }
+  #bank-benefit-notification .notification-close:hover {
+    color: #f0e8da;
+    background: rgba(255, 230, 200, 0.06);
+  }
+}
+
+#bank-benefit-notification .notification-close:focus-visible,
+#bank-benefit-notification .copy-button:focus-visible,
+#bank-benefit-notification .benefit-link:focus-visible {
+  outline: 1.5px solid #c97a2b;
   outline-offset: 2px;
 }
 
-.notification-body {
-  padding: 0 18px 18px;
-}
-
-.benefit-item {
-  padding: 14px;
-  border: 1px solid rgba(22, 54, 43, 0.08);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.74);
-}
-
-.benefit-item:last-child {
-  margin-bottom: 0;
-}
-
-.benefit-divider {
-  margin-top: 12px;
-}
-
-.benefit-bank {
-  margin-bottom: 6px;
-  color: #0a5f49;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.benefit-discount {
-  font-size: 16px;
-  line-height: 1.45;
-  font-weight: 700;
-}
-
-.benefit-code {
+#bank-benefit-notification .notification-body {
+  padding: 8px 14px 14px;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px dashed rgba(13, 122, 95, 0.34);
-  border-radius: 14px;
-  background: #f7fcfa;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.code-label {
-  color: #5f6f66;
-  font-size: 13px;
+/* Each benefit becomes a typographic block — no cards, no borders */
+#bank-benefit-notification .benefit-item {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.code-value {
-  flex: 1;
-  color: #0a5f49;
-  font-family: "Courier New", monospace;
+#bank-benefit-notification .benefit-divider {
+  margin-top: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(60, 40, 20, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .benefit-divider {
+    border-top-color: rgba(255, 230, 200, 0.08);
+  }
+}
+
+#bank-benefit-notification .benefit-bank {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9c8770;
+  margin: 0;
+  /* Sits as a tiny attribution before the discount line */
+}
+
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .benefit-bank {
+    color: #b39f86;
+  }
+}
+
+#bank-benefit-notification .benefit-discount {
   font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  line-height: 1.4;
+  font-weight: 500;
+  color: #221b14;
+  margin: 0;
+  letter-spacing: -0.003em;
 }
 
-.copy-button,
-.benefit-link {
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .benefit-discount {
+    color: #f0e8da;
+  }
+}
+
+/* Code: a compact inline pill with copy-on-click — no big button */
+#bank-benefit-notification .benefit-code {
+  margin-top: 6px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  padding: 8px 12px;
-  border-radius: 12px;
+  gap: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+#bank-benefit-notification .code-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9c8770;
+  margin-right: 6px;
+  align-self: center;
+}
+
+#bank-benefit-notification .code-value {
+  font-family: "SF Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
   font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
+  font-weight: 600;
+  color: #c97a2b;
+  background: #f6eedc;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  margin: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .code-label {
+    color: #b39f86;
+  }
+  #bank-benefit-notification .code-value {
+    color: #e8a455;
+    background: rgba(232, 164, 85, 0.12);
+  }
+}
+
+#bank-benefit-notification .copy-button {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 3px 6px;
+  margin-left: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #9c8770;
   cursor: pointer;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  border-radius: 4px;
+  transition: color 140ms ease, background 140ms ease;
 }
 
-.copy-button {
-  border: none;
-  background: linear-gradient(135deg, #0d7a5f 0%, #095b46 100%);
-  color: #f7fff9;
+#bank-benefit-notification .copy-button:hover {
+  color: #c97a2b;
+  background: rgba(201, 122, 43, 0.08);
 }
 
-.copy-button:hover,
-.benefit-link:hover {
-  transform: translateY(-1px);
+#bank-benefit-notification .copy-button.copied {
+  color: #6e8e4a;
+  background: rgba(110, 142, 74, 0.10);
 }
 
-.copy-button.copied {
-  background: #2c8f58;
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .copy-button {
+    color: #b39f86;
+  }
+  #bank-benefit-notification .copy-button:hover {
+    color: #e8a455;
+    background: rgba(232, 164, 85, 0.10);
+  }
+  #bank-benefit-notification .copy-button.copied {
+    color: #a3c177;
+    background: rgba(163, 193, 119, 0.12);
+  }
 }
 
-.benefit-conditions {
-  margin-top: 10px;
-  color: #56655c;
-  font-size: 13px;
-  line-height: 1.5;
+#bank-benefit-notification .benefit-conditions {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #6c5a47;
 }
 
-.benefit-actions {
-  margin-top: 12px;
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .benefit-conditions {
+    color: #b39f86;
+  }
 }
 
-.benefit-link {
-  border: 1px solid rgba(22, 54, 43, 0.12);
-  background: rgba(255, 255, 255, 0.92);
-  color: #1f2a24;
+#bank-benefit-notification .benefit-actions {
+  margin-top: 6px;
 }
 
+#bank-benefit-notification .benefit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #221b14;
+  text-decoration: underline;
+  text-decoration-color: rgba(60, 40, 20, 0.3);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+#bank-benefit-notification .benefit-link::after {
+  content: "↗";
+  font-size: 11px;
+  color: #9c8770;
+}
+
+#bank-benefit-notification .benefit-link:hover {
+  color: #c97a2b;
+  text-decoration-color: #c97a2b;
+}
+
+@media (prefers-color-scheme: dark) {
+  #bank-benefit-notification .benefit-link {
+    color: #f0e8da;
+    text-decoration-color: rgba(255, 230, 200, 0.3);
+  }
+  #bank-benefit-notification .benefit-link:hover {
+    color: #e8a455;
+    text-decoration-color: #e8a455;
+  }
+}
+
+/* Mobile/narrow: tighten and use full width with margin */
 @media (max-width: 480px) {
-  .bank-benefit-notification {
-    top: 14px;
-    right: 14px;
-    width: calc(100vw - 28px);
-  }
-
-  .notification-title {
-    font-size: 20px;
-  }
-
-  .benefit-code {
-    flex-wrap: wrap;
-  }
-
-  .copy-button {
-    width: 100%;
+  #bank-benefit-notification.bank-benefit-notification {
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
   }
 }

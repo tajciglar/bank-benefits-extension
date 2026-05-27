@@ -3,66 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank Card Benefits</title>
+  <title>Ugodnosti kartic</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="popup-container">
-    <div class="header">
-      <div class="eyebrow">Bank benefits notifier</div>
-      <h1>Ugodnosti kartic</h1>
-      <p class="subtitle">Izberite banke in spremljajte popuste na straneh, ki jih obiskujete.</p>
+    <header class="header">
+      <div class="eyebrow">Slovenske banke &amp; kartice</div>
+      <h1>Ugodnosti<br><em>kartic</em></h1>
+      <p class="subtitle">Tih opomnik, ko obiščete trgovino, kjer vam vaša banka prizna popust.</p>
       <div class="header-stats">
-        <div class="header-stat">
-          <span class="header-stat-value" id="selectedBankCount">0</span>
-          <span class="header-stat-label">izbranih bank</span>
-        </div>
-        <div class="header-stat">
+        <span class="header-stat">
           <span class="header-stat-value" id="benefitCount">0</span>
           <span class="header-stat-label">aktivnih ugodnosti</span>
-        </div>
+        </span>
+        <span class="header-stat">
+          <span class="header-stat-value" id="selectedBankCount">0</span>
+          <span class="header-stat-label">izbranih kartic</span>
+        </span>
       </div>
-    </div>
-    
-    <div class="content">
+    </header>
+
+    <main class="content">
       <div class="section-heading">
-        <div>
-          <h2>Moje banke</h2>
-          <p>Označite banke, katerih kartice uporabljate.</p>
-        </div>
+        <h2>Moje kartice</h2>
         <div class="action-row">
-          <button class="text-button" id="selectAllBanks" type="button">Izberi vse</button>
+          <button class="text-button" id="selectAllBanks" type="button">Vse</button>
           <button class="text-button" id="clearAllBanks" type="button">Počisti</button>
         </div>
       </div>
 
-      <div class="bank-list" id="bankList">
-        <!-- Banks will be dynamically added here -->
-      </div>
-      
-      <div class="info-section">
-        <div class="info-badge">Kako deluje</div>
-        <p class="info-text">Ko obiščete spletno stran z ugodnostjo, se zgoraj desno prikaže obvestilo s popustom in morebitno kodo.</p>
-      </div>
-      
-      <div class="stats-section" id="statsSection">
-        <div class="stat-item">
-          <span class="stat-number" id="availableBankCount">0</span>
-          <span class="stat-label">bank v imeniku</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number" id="selectedBenefitCount">0</span>
-          <span class="stat-label">ugodnosti za izbrane banke</span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="footer">
-      <button class="btn-secondary" id="viewAllBenefits" type="button">Preglej vse ugodnosti</button>
-    </div>
+      <div class="bank-list" id="bankList" role="list"></div>
+    </main>
+
+    <footer class="footer">
+      <button class="btn-secondary" id="viewAllBenefits" type="button">
+        <span>Preglej vse izbrane ugodnosti</span>
+      </button>
+    </footer>
   </div>
-  
-  <!-- All Benefits Modal -->
+
   <div class="modal" id="benefitsModal" style="display: none;">
     <div class="modal-content">
       <div class="modal-header">
@@ -70,14 +50,12 @@
           <h2>Vse ugodnosti</h2>
           <p class="modal-subtitle" id="modalSubtitle">Pregled po izbranih bankah</p>
         </div>
-        <button class="close-modal" id="closeModal" type="button" aria-label="Zapri">×</button>
+        <button class="close-modal" id="closeModal" type="button" aria-label="Nazaj">×</button>
       </div>
-      <div class="modal-body" id="modalBody">
-        <!-- Benefits will be listed here -->
-      </div>
+      <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
-  
+
   <script src="benefits.js"></script>
   <script src="popup.js"></script>
 </body>
