@@ -9,26 +9,32 @@
 <body>
   <div class="popup-container">
     <header class="header">
-      <h1>Ugodnosti kartic</h1>
-      <p class="subtitle">Tih opomnik, ko obiščete trgovino, kjer vam vaša banka prizna popust.</p>
+      <div class="header-top">
+        <h1 data-i18n="title">Ugodnosti kartic</h1>
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button class="lang-btn" data-lang="sl" type="button" aria-pressed="true">SL</button>
+          <button class="lang-btn" data-lang="en" type="button" aria-pressed="false">EN</button>
+        </div>
+      </div>
+      <p class="subtitle" data-i18n="subtitle">Tih opomnik, ko obiščete trgovino, kjer vam vaša banka prizna popust.</p>
       <div class="header-stats">
         <span class="header-stat">
           <span class="header-stat-value" id="benefitCount">0</span>
-          <span class="header-stat-label">aktivnih ugodnosti</span>
+          <span class="header-stat-label" data-i18n="stat.benefits">aktivnih ugodnosti</span>
         </span>
         <span class="header-stat">
           <span class="header-stat-value" id="selectedBankCount">0</span>
-          <span class="header-stat-label">izbranih kartic</span>
+          <span class="header-stat-label" data-i18n="stat.cards">izbranih kartic</span>
         </span>
       </div>
     </header>
 
     <main class="content">
       <div class="section-heading">
-        <h2>Moje kartice</h2>
+        <h2 data-i18n="myCards">Moje kartice</h2>
         <div class="action-row">
-          <button class="text-button" id="selectAllBanks" type="button">Vse</button>
-          <button class="text-button" id="clearAllBanks" type="button">Počisti</button>
+          <button class="text-button" id="selectAllBanks" type="button" data-i18n="selectAll">Vse</button>
+          <button class="text-button" id="clearAllBanks" type="button" data-i18n="clear">Počisti</button>
         </div>
       </div>
 
@@ -37,7 +43,7 @@
 
     <footer class="footer">
       <button class="btn-secondary" id="viewAllBenefits" type="button">
-        <span>Preglej vse izbrane ugodnosti</span>
+        <span data-i18n="viewAll">Preglej vse izbrane ugodnosti</span>
       </button>
     </footer>
   </div>
@@ -46,10 +52,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h2>Vse ugodnosti</h2>
+          <h2 data-i18n="modal.title">Vse ugodnosti</h2>
           <p class="modal-subtitle" id="modalSubtitle">Pregled po izbranih bankah</p>
         </div>
-        <button class="close-modal" id="closeModal" type="button" aria-label="Nazaj">×</button>
+        <button class="close-modal" id="closeModal" type="button" data-i18n-aria="modal.close" aria-label="Nazaj">×</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
