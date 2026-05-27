@@ -13,13 +13,16 @@ function getCurrentDomain() {
 // Function to check if current site has benefits
 async function checkForBenefits() {
   const currentDomain = getCurrentDomain();
-  
+
   // Get user's selected banks from storage
   const result = await EXT.storage.sync.get(['selectedBanks']);
   const selectedBanks = result.selectedBanks || [];
-  
+
+  console.info('[bank-benefits] selected banks:', selectedBanks);
+
   if (selectedBanks.length === 0) {
-    return; // No banks selected, don't show anything
+    console.info('[bank-benefits] no banks selected — open the popup and pick some');
+    return;
   }
   
   // Check if current domain matches any benefits
@@ -45,7 +48,8 @@ async function checkForBenefits() {
     }
   }
   
-  // If benefits found, show notification
+  console.info('[bank-benefits] matched benefits on', currentDomain, ':', availableBenefits.length);
+
   if (availableBenefits.length > 0) {
     showBenefitNotification(availableBenefits);
   }
@@ -142,9 +146,29 @@ function showBenefitNotification(benefits) {
     body
   );
 
+  // Belt-and-suspenders: set critical positioning inline so the notification
+  // is visible even if notification.css fails to apply for some reason.
+  notification.style.cssText = [
+    'position:fixed',
+    'top:20px',
+    'right:20px',
+    'width:360px',
+    'max-width:calc(100vw - 32px)',
+    'z-index:2147483647',
+    'background:#ffffff',
+    'color:#0e0e0f',
+    'border:1px solid #d4d4d6',
+    'border-radius:10px',
+    'box-shadow:0 16px 32px -16px rgba(10,10,15,0.22),0 2px 6px rgba(10,10,15,0.08)',
+    'font-family:ui-sans-serif,system-ui,sans-serif',
+    'font-size:14px',
+    'line-height:1.5'
+  ].join(';');
+
   closeBtn.addEventListener('click', () => notification.remove());
 
   document.body.appendChild(notification);
+  console.info('[bank-benefits] notification rendered for', window.location.hostname);
 
   setTimeout(() => {
     if (document.getElementById('bank-benefit-notification')) {
@@ -156,22 +180,27 @@ function showBenefitNotification(benefits) {
 
 async function init() {
   const sessionKey = `benefit-shown:${getCurrentDomain()}`;
+  console.info('[bank-benefits] init on', getCurrentDomain());
   if (sessionStorage.getItem(sessionKey)) {
+    console.info('[bank-benefits] already shown this session, skipping');
     return;
   }
 
   let response;
   try {
     response = await EXT.runtime.sendMessage({ action: 'getBenefits' });
-  } catch (_) {
+  } catch (err) {
+    console.warn('[bank-benefits] runtime.sendMessage failed:', err);
     return;
   }
 
   if (!response || !response.benefits) {
+    console.warn('[bank-benefits] no benefits in response:', response);
     return;
   }
 
   BENEFITS_DATABASE = response.benefits;
+  console.info('[bank-benefits] loaded benefits database, banks:', Object.keys(BENEFITS_DATABASE).length);
 
   await checkForBenefits();
 

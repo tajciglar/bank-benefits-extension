@@ -1,57 +1,54 @@
-@import url('./fonts/fonts.css');
-
-/* ─────────────────────────────────────────────────────────────
-   Tokens — warm neutrals + a single confident amber accent.
-   Light and dark are distinct palettes, not inversions.
-   ───────────────────────────────────────────────────────────── */
+/* popup.css — System fonts only. Warm-neutral palette with deep terracotta
+   accent. Readable first, distinctive second. */
 
 :root {
   color-scheme: light dark;
 
-  /* Type */
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --font-sans: "Albert Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  /* System font stack — no webfonts, no FOUT, no AI-template smell.
+     Native OS rendering = different on every machine, always honest. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI Variable", "Segoe UI", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 
-  /* Spacing scale — geometric, with breathing room */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 22px;
   --space-6: 32px;
-  --space-7: 48px;
 
-  /* Light palette — warm off-white paper, espresso ink */
-  --bg: oklch(98% 0.006 80);
-  --surface: oklch(99.2% 0.004 80);
-  --surface-sunk: oklch(96% 0.008 75);
-  --ink: oklch(22% 0.015 60);
-  --ink-soft: oklch(38% 0.012 60);
-  --ink-mute: oklch(58% 0.012 65);
-  --rule: oklch(88% 0.012 70);
-  --rule-soft: oklch(93% 0.008 70);
-  --accent: oklch(58% 0.16 55);             /* burnt amber */
-  --accent-ink: oklch(40% 0.14 45);
-  --accent-wash: oklch(95% 0.04 70);
+  /* Light — inky monochrome with cool gray neutrals, single cobalt accent.
+     Contrast: ink/bg ≈ 18:1, accent/bg ≈ 7:1 (AAA). */
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-sunk: #f3f3f3;
+  --ink: #0e0e0f;
+  --ink-soft: #38383b;
+  --ink-mute: #6b6b6e;
+  --rule: #d4d4d6;
+  --rule-soft: #e8e8ea;
+  --accent: #1d4ed8;             /* cobalt — only color in the design */
+  --accent-hover: #1e40af;
+  --accent-wash: #e0eaff;
   --selected-mark: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark palette — its own composition, not inverted.
-       Deeper warm charcoal with a softer amber that holds up at low brightness. */
-    --bg: oklch(17% 0.01 50);
-    --surface: oklch(20% 0.012 50);
-    --surface-sunk: oklch(14% 0.01 50);
-    --ink: oklch(94% 0.012 80);
-    --ink-soft: oklch(78% 0.012 70);
-    --ink-mute: oklch(60% 0.012 65);
-    --rule: oklch(28% 0.012 55);
-    --rule-soft: oklch(24% 0.01 50);
-    --accent: oklch(76% 0.13 70);             /* warmer amber for dark */
-    --accent-ink: oklch(84% 0.11 75);
-    --accent-wash: oklch(26% 0.04 60);
-    --selected-mark: var(--accent);
+    /* Dark — its own composition: deeper near-black, brighter cobalt for low light */
+    --bg: #0f0f10;
+    --surface: #161618;
+    --surface-sunk: #1a1a1c;
+    --ink: #f5f5f6;
+    --ink-soft: #c5c5c7;
+    --ink-mute: #8a8a8d;
+    --rule: #2a2a2c;
+    --rule-soft: #1e1e20;
+    --accent: #6ea8ff;
+    --accent-hover: #93b9ff;
+    --accent-wash: #1c2842;
   }
 }
 
@@ -66,16 +63,20 @@
   color: var(--ink);
 }
 
-html, body {
-  /* Browser popups have a hard upper bound (Chrome: 800px tall, 800px wide).
-     We use 380px wide for a comfortable reading measure. */
+html {
+  background: var(--bg);
+}
+
+body {
+  /* Firefox sizes the popup from <body>. Chrome accepts both. */
   width: 380px;
+  min-width: 380px;
+  min-height: 540px;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
-  font-feature-settings: "ss01", "cv11";   /* nicer alts where supported */
+  font-size: 15px;            /* up from 14 for better readability */
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -88,85 +89,74 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Header — large editorial title, no eyebrow, no stat tiles.
-   The title sits in a generous block of negative space.
+   Header — straight type, no italic affectations, no eyebrow pill
    ───────────────────────────────────────────────────────────── */
 
 .header {
-  padding: var(--space-6) var(--space-5) var(--space-5);
+  padding: var(--space-5) var(--space-5) var(--space-4);
 }
 
-/* Old eyebrow becomes a single hairline label, not a pill */
 .eyebrow {
-  font-family: var(--font-sans);
-  font-size: 10.5px;
+  /* Quiet single-line label, not a pill. Kept for the existing markup. */
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-mute);
-  margin-bottom: var(--space-5);
-  /* No background, no pill — just a confident label */
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 14px;
-  height: 1px;
-  background: var(--ink-mute);
+  margin-bottom: var(--space-4);
+  display: block;
 }
 
 .header h1 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  /* Optical size: lean into Fraunces' display feel at large size */
-  font-variation-settings: "opsz" 144, "SOFT" 50;
-  font-size: 40px;
-  line-height: 0.98;
-  letter-spacing: -0.022em;
+  /* No italic. No display serif. Just a strong, readable title. */
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.018em;
   color: var(--ink);
 }
 
+.header h1 br,
 .header h1 em {
-  font-style: italic;
-  font-weight: 400;
-  /* Italics get a touch more soft warmth */
-  font-variation-settings: "opsz" 144, "SOFT" 100;
-  color: var(--accent-ink);
+  /* Old <br><em> markup neutralized — render inline, upright */
+  display: inline;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.header h1 em::before {
+  content: " ";
+}
+
+.header h1 br {
+  display: none;
 }
 
 .subtitle {
-  margin-top: var(--space-3);
-  max-width: 30ch;
+  margin-top: var(--space-2);
+  max-width: 34ch;
   color: var(--ink-soft);
-  font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
-/* Stat tiles replaced by a single inline line — no card-in-card */
 .header-stats {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-3);
   margin-top: var(--space-4);
-  font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--ink-mute);
+  align-items: baseline;
 }
 
 .header-stat {
-  /* The old tile chrome is gone. Stats are just text now. */
   display: inline-flex;
-  gap: 4px;
+  gap: 5px;
   align-items: baseline;
 }
 
 .header-stat-value {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 14;
   font-weight: 600;
   font-size: 15px;
   color: var(--ink);
@@ -179,20 +169,19 @@ html, body {
 
 .header-stat + .header-stat::before {
   content: "·";
-  margin-right: var(--space-2);
-  color: var(--ink-mute);
+  margin-right: var(--space-3);
+  color: var(--rule);
   font-weight: 400;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Content area — bank list grouped by type
+   Content area
    ───────────────────────────────────────────────────────────── */
 
 .content {
   flex: 1;
   padding: 0 var(--space-5) var(--space-5);
   overflow-y: auto;
-  /* Subtle scrollbar that doesn't shout */
   scrollbar-width: thin;
   scrollbar-color: var(--rule) transparent;
 }
@@ -208,7 +197,6 @@ html, body {
   border-radius: 999px;
 }
 
-/* Top rule separating header from content — hairline, not heavy */
 .content::before {
   content: "";
   display: block;
@@ -221,28 +209,25 @@ html, body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   gap: var(--space-3);
 }
 
 .section-heading h2 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-variation-settings: "opsz" 30;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
   letter-spacing: -0.005em;
   color: var(--ink);
 }
 
 .section-heading p {
-  /* Subtitle below H2 — dropped from old design. Hide via JS no longer needed. */
   display: none;
 }
 
 .action-row {
   display: flex;
   gap: var(--space-3);
-  flex-shrink: 0;
+  align-items: baseline;
 }
 
 .text-button {
@@ -250,53 +235,49 @@ html, body {
   background: none;
   border: 0;
   padding: 0;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 500;
   color: var(--ink-mute);
   cursor: pointer;
-  letter-spacing: 0.005em;
-  transition: color 140ms ease;
-  /* Text-link feel with a subtle underline on hover */
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
 }
 
 .text-button:hover,
 .text-button:focus-visible {
   color: var(--ink);
   text-decoration-color: var(--ink-soft);
+  outline: none;
 }
 
 .text-button + .text-button::before {
   content: "/";
   margin-right: var(--space-3);
   color: var(--rule);
-  display: inline-block;
   text-decoration: none;
+  display: inline-block;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Bank list — typographic list with subtle group dividers.
-   No cards, no checkboxes-as-decoration. A bank is just a row
-   of text with a marker that fills in when selected.
+   Bank list — typographic, generous spacing, clear selection
    ───────────────────────────────────────────────────────────── */
 
 .bank-list {
   list-style: none;
-  margin: 0 0 var(--space-5);
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
 }
 
 .bank-group-label {
-  font-family: var(--font-sans);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-mute);
   margin: var(--space-5) 0 var(--space-2);
@@ -322,16 +303,17 @@ html, body {
   border: 0;
   width: 100%;
   display: grid;
-  grid-template-columns: 14px 1fr auto;
+  grid-template-columns: 16px 1fr auto;
   align-items: baseline;
   gap: var(--space-3);
-  padding: 11px 0;
+  padding: 13px 0;
   border-bottom: 1px solid var(--rule-soft);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
   color: var(--ink);
-  transition: color 120ms ease, padding 220ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  transition: background 120ms ease, padding 220ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  border-radius: 0;
 }
 
 .bank-item:last-child {
@@ -339,42 +321,39 @@ html, body {
 }
 
 .bank-item:hover {
-  /* No lift transform — instead, the marker peeks in */
-  padding-left: 4px;
+  padding-left: 6px;
+  padding-right: 6px;
+  background: var(--surface-sunk);
+  margin-left: -6px;
+  margin-right: -6px;
+  border-bottom-color: transparent;
+  border-radius: 4px;
 }
 
 .bank-item:focus-visible {
-  outline: none;
+  outline: 1.5px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-.bank-item:focus-visible .bank-name {
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 3px;
-}
-
-/* The marker — a small filled circle that animates in on selection */
 .bank-checkbox {
-  width: 7px;
-  height: 7px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
-  background: var(--rule);
-  transform: scale(0.6);
-  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms ease;
+  background: transparent;
+  border: 1.5px solid var(--rule);
   align-self: center;
   justify-self: center;
-  margin-top: 1px;
+  transition: background 200ms ease, border-color 200ms ease;
 }
 
 .bank-item:hover .bank-checkbox {
-  background: var(--ink-mute);
-  transform: scale(0.8);
+  border-color: var(--ink-mute);
 }
 
 .bank-item.selected .bank-checkbox {
   background: var(--selected-mark);
-  transform: scale(1);
+  border-color: var(--selected-mark);
 }
 
 .bank-info {
@@ -382,10 +361,8 @@ html, body {
 }
 
 .bank-name {
-  font-family: var(--font-sans);
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: -0.005em;
   color: var(--ink);
 }
 
@@ -394,34 +371,25 @@ html, body {
 }
 
 .bank-benefits-count {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 14;
   font-weight: 500;
-  font-size: 13.5px;
+  font-size: 14px;
   font-variant-numeric: tabular-nums;
   color: var(--ink-mute);
-  /* Just the number, e.g. "29" — pluralized word is hidden, the column header
-     implies "ugodnosti" */
   text-align: right;
 }
 
 .bank-item.selected .bank-benefits-count {
-  color: var(--accent-ink);
+  color: var(--accent);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Info section + bottom stats: removed entirely.
-   The "kako deluje" copy lives in the title area instead.
-   These selectors are kept defensively in case popup.js sets them.
-   ───────────────────────────────────────────────────────────── */
-
+/* Defensive hides for removed sections */
 .info-section,
 .stats-section {
   display: none;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Footer — text-link CTA with arrow, not a gradient pill
+   Footer — text-link CTA with arrow
    ───────────────────────────────────────────────────────────── */
 
 .footer {
@@ -440,26 +408,23 @@ html, body {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3);
-  font-family: var(--font-sans);
-  font-size: 14px;
+  font-family: inherit;
+  font-size: 14.5px;
   font-weight: 500;
   color: var(--ink);
   cursor: pointer;
-  letter-spacing: -0.005em;
   transition: color 140ms ease;
 }
 
 .btn-secondary::after {
   content: "→";
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--ink-soft);
   transition: transform 220ms cubic-bezier(0.2, 0.6, 0.2, 1), color 140ms ease;
 }
 
 .btn-secondary:hover {
-  color: var(--accent-ink);
+  color: var(--accent);
 }
 
 .btn-secondary:hover::after {
@@ -468,16 +433,13 @@ html, body {
 }
 
 .btn-secondary:focus-visible {
-  outline: none;
-}
-
-.btn-secondary:focus-visible::after {
-  color: var(--accent);
+  outline: 1.5px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Modal — full-bleed inside the popup, not centered with backdrop.
-   Slides up from the bottom. Feels like flipping to a back page.
+   Modal — full-bleed slide-up
    ───────────────────────────────────────────────────────────── */
 
 .modal {
@@ -487,24 +449,16 @@ html, body {
   background: var(--bg);
   display: flex;
   flex-direction: column;
-  animation: modal-slide 280ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: modal-slide 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 @keyframes modal-slide {
-  from {
-    transform: translateY(12px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .modal {
-    animation: none;
-  }
+  .modal { animation: none; }
   .bank-item, .btn-secondary, .btn-secondary::after, .bank-checkbox {
     transition: none;
   }
@@ -514,7 +468,6 @@ html, body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* No box shadow, no border-radius — the modal is the page */
   background: transparent;
   max-height: none;
   border: 0;
@@ -531,18 +484,15 @@ html, body {
 }
 
 .modal-header h2 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-variation-settings: "opsz" 144;
-  font-size: 28px;
-  line-height: 1;
-  letter-spacing: -0.018em;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 
 .modal-subtitle {
   margin-top: var(--space-2);
-  font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--ink-mute);
 }
 
@@ -561,6 +511,7 @@ html, body {
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
+  font-family: inherit;
   transition: color 140ms ease, background 140ms ease;
 }
 
@@ -577,15 +528,11 @@ html, body {
   scrollbar-color: var(--rule) transparent;
 }
 
-.modal-body::-webkit-scrollbar {
-  width: 6px;
-}
+.modal-body::-webkit-scrollbar { width: 6px; }
 .modal-body::-webkit-scrollbar-thumb {
   background: var(--rule);
   border-radius: 999px;
 }
-
-/* Benefits grouped by bank — bank name is a tiny eyebrow above each block */
 
 .benefit-group {
   margin-bottom: var(--space-6);
@@ -596,8 +543,7 @@ html, body {
 }
 
 .benefit-group-title {
-  font-family: var(--font-sans);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -609,33 +555,26 @@ html, body {
 
 .benefit-card {
   margin: 0 0 var(--space-4);
-  /* No border, no card chrome. A benefit is a typographic block. */
   background: none;
   border: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr;
   gap: var(--space-1);
 }
 
-.benefit-card:last-child {
-  margin-bottom: 0;
-}
+.benefit-card:last-child { margin-bottom: 0; }
 
 .benefit-merchant {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-variation-settings: "opsz" 22;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink);
   letter-spacing: -0.005em;
-  text-transform: none;   /* override old uppercase rule */
+  text-transform: none;
 }
 
 .benefit-discount {
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--ink-soft);
 }
 
@@ -647,10 +586,9 @@ html, body {
   padding: 4px 10px;
   border-radius: 4px;
   background: var(--accent-wash);
-  font-family: var(--font-sans);
-  font-size: 12px;
   align-self: flex-start;
   width: max-content;
+  max-width: 100%;
 }
 
 .code-label-small {
@@ -662,26 +600,19 @@ html, body {
 }
 
 .code-value-small {
-  color: var(--accent-ink);
-  font-family: var(--font-display);
+  color: var(--accent);
+  font-family: var(--font-mono);
   font-weight: 600;
-  font-variation-settings: "opsz" 14;
   font-size: 13px;
   letter-spacing: 0.01em;
-  font-feature-settings: "tnum";
 }
 
 .benefit-conditions-small {
   margin-top: var(--space-1);
-  font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.5;
   color: var(--ink-mute);
 }
-
-/* ─────────────────────────────────────────────────────────────
-   Empty state — the rare moment we get to show personality
-   ───────────────────────────────────────────────────────────── */
 
 .empty-state {
   padding: var(--space-6) var(--space-4);
@@ -689,19 +620,16 @@ html, body {
 }
 
 .empty-state-icon {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 36px;
+  font-size: 32px;
   color: var(--accent);
   line-height: 1;
   margin-bottom: var(--space-3);
+  font-weight: 300;
 }
 
 .empty-state-text {
-  font-family: var(--font-sans);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--ink-soft);
-  max-width: 28ch;
+  max-width: 30ch;
 }

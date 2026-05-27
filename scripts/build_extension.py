@@ -22,7 +22,7 @@ SHARED_FILES = [
     "popup.html",
     "popup.js",
 ]
-SHARED_DIRS = ["icons", "fonts"]
+SHARED_DIRS = ["icons"]
 TARGETS = {
     "chrome": MANIFESTS_DIR / "chrome.json",
     "firefox": MANIFESTS_DIR / "firefox.json",

@@ -1,9 +1,14 @@
-// background.js - Service worker for the extension
+// background.js — Service worker (Chrome) / background page (Firefox).
+// In Chrome MV3 we run in a service worker, where importScripts() is needed
+// to bring in benefits.js. In Firefox MV3 the background page loads
+// benefits.js via the manifest's background.scripts array, so BENEFITS_DATABASE
+// is already defined and importScripts isn't available.
 
 const EXT = typeof browser !== 'undefined' ? browser : chrome;
 
-// Import benefits database
-importScripts('benefits.js');
+if (typeof importScripts === 'function') {
+  importScripts('benefits.js');
+}
 
 // Listen for messages from content script
 EXT.runtime.onMessage.addListener((request, sender, sendResponse) => {
