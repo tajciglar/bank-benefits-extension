@@ -30,6 +30,12 @@ Built for Slovenian cardholders — covers **8 Slovenian banks** plus universal 
 
 ---
 
+## Why this exists
+
+I shop online a lot, and I kept catching myself realizing — sometimes hours after checkout, sometimes never — that one of my cards would have given me a discount I'd already paid full price for. Banks publish these benefits, but never push them at the moment they actually matter. Bank statements aren't reminders. Newsletters aren't reminders. The discount only matters at checkout, on the merchant's page.
+
+So I built a thing that fires there.
+
 ## What it does
 
 Slovenian bank benefits are scattered across PDFs, microsites, and partner pages. Most cardholders forget which discounts they're entitled to. This extension closes that gap:
@@ -202,6 +208,21 @@ For SPA / JS-rendered pages (most modern bank sites), use Playwright. The agents
 - **No accounts, no telemetry, no analytics.** The extension has no remote dependencies
 - **`storage.sync`** is the only thing the extension writes to — and it only stores which banks you ticked. Sync only happens to your own browser-account storage (Chrome/Firefox/Edge accounts) if you have it enabled
 - **`<all_urls>`** is requested because the extension needs to read the current tab's URL to check for matches. The URL is never transmitted
+
+## Roadmap
+
+The data is the hardest part to keep accurate — Slovenian banks rotate codes and partners on no fixed schedule, so a manual database goes stale fast. Most of the roadmap is about reducing that gap.
+
+- **Scheduled auto-scraping** — GitHub Actions workflow that re-runs the scrapers weekly, opens a PR with the diff, and a human reviews. Today the scrapers are run by hand.
+- **Stale-benefit detection** — flag benefits whose `expires` date is approaching or has passed, and benefits the live bank page no longer mentions. Surfaces what needs human attention without scraping the whole world.
+- **In-extension "report wrong benefit" link** — one click on a notification opens a pre-filled GitHub issue. Lowers the friction for non-technical users to help.
+- **More banks** — anywhere a Slovenian bank publishes a public benefits page, it can be added. Open to PRs that bring in regional banks I missed (Sberbank reborn, hranilnice, n26-Slovenia, etc.).
+- **European neobank coverage** — Revolut, N26, Wise, Bunq. Most of these hide their merchant offers behind the app, which makes scraping non-trivial; tracking it as a future direction rather than a near-term commitment.
+- **Chrome Web Store / Firefox AMO listings** — currently install is "load unpacked." Store listings make this usable for non-technical Slovenians.
+- **Notification UX** — show "you'd also save with [other card] if you had it" hints, gentle nudges for cards the user *doesn't* hold but where the discount is large.
+- **Localization** — UI is Slovenian-only. English would open the extension to Slovenian-banking expats. Lower priority since the data is inherently Slovenia-bound.
+
+If any of these resonate, open an issue — happy to discuss approach before someone sinks time into a PR.
 
 ## Contributing
 
