@@ -4,6 +4,30 @@
 
 Built for Slovenian cardholders — covers **8 Slovenian banks** plus universal **Visa and Mastercard tier benefits**, **288 active discounts** in total. UI is in Slovenian. Open source.
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Manifest V3](https://img.shields.io/badge/manifest-v3-1d4ed8)
+![Benefits](https://img.shields.io/badge/benefits-288-1d4ed8)
+![Banks](https://img.shields.io/badge/banks-8-1d4ed8)
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/popup-light.png" alt="Popup in light mode" width="380">
+  <img src="screenshots/popup-dark.png" alt="Popup in dark mode" width="380">
+</p>
+
+<p align="center">
+  <img src="screenshots/notification.png" alt="In-page notification on a merchant site" width="720"><br>
+  <em>Notification appears top-right when you land on a merchant with a matching benefit.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/modal.png" alt="Full benefits list" width="380"><br>
+  <em>"Preglej vse izbrane ugodnosti" — full list grouped by bank.</em>
+</p>
+
 ---
 
 ## What it does
