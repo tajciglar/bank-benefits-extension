@@ -28,8 +28,11 @@ async function checkForBenefits() {
   for (const bank of selectedBanks) {
     const bankBenefits = BENEFITS_DATABASE[bank] || [];
     
+    const today = new Date().toISOString().slice(0, 10);
+
     for (const benefit of bankBenefits) {
-      // Check if current domain matches any of the benefit domains
+      if (benefit.expires && benefit.expires < today) continue;
+
       for (const domain of benefit.domains) {
         if (currentDomain === domain || currentDomain.endsWith('.' + domain)) {
           availableBenefits.push({
@@ -48,87 +51,102 @@ async function checkForBenefits() {
   }
 }
 
-// Function to show notification on page
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  if (attrs) {
+    for (const [key, value] of Object.entries(attrs)) {
+      if (key === 'className') node.className = value;
+      else if (key === 'textContent') node.textContent = value;
+      else node.setAttribute(key, value);
+    }
+  }
+  for (const child of children) {
+    if (typeof child === 'string') node.appendChild(document.createTextNode(child));
+    else if (child) node.appendChild(child);
+  }
+  return node;
+}
+
 function showBenefitNotification(benefits) {
-  // Remove existing notification if any
   const existingNotification = document.getElementById('bank-benefit-notification');
   if (existingNotification) {
     existingNotification.remove();
   }
-  
-  // Create notification element
-  const notification = document.createElement('div');
-  notification.id = 'bank-benefit-notification';
-  notification.className = 'bank-benefit-notification';
-  
-  // Build notification content
-  let content = `
-    <div class="notification-header">
-      <div>
-        <div class="notification-eyebrow">Bank benefit found</div>
-        <span class="notification-title">Popust na voljo</span>
-      </div>
-      <button class="notification-close" id="close-notification" aria-label="Zapri obvestilo">×</button>
-    </div>
-    <div class="notification-body">
-  `;
-  
+
+  const closeBtn = el('button', {
+    className: 'notification-close',
+    'aria-label': 'Zapri obvestilo',
+    type: 'button',
+    textContent: '×'
+  });
+
+  const header = el('div', { className: 'notification-header' },
+    el('div', null,
+      el('div', { className: 'notification-eyebrow', textContent: 'Bank benefit found' }),
+      el('span', { className: 'notification-title', textContent: 'Popust na voljo' })
+    ),
+    closeBtn
+  );
+
+  const body = el('div', { className: 'notification-body' });
+
   benefits.forEach((benefit, index) => {
-    content += `
-      <div class="benefit-item ${index > 0 ? 'benefit-divider' : ''}">
-        <div class="benefit-bank">${benefit.bank}</div>
-        <div class="benefit-discount">${benefit.discount}</div>
-        ${benefit.code ? `
-          <div class="benefit-code">
-            <span class="code-label">Koda:</span>
-            <span class="code-value" id="code-${index}">${benefit.code}</span>
-            <button class="copy-button" type="button" data-code="${benefit.code}" data-index="${index}">Kopiraj</button>
-          </div>
-        ` : ''}
-        ${benefit.conditions ? `<div class="benefit-conditions">${benefit.conditions}</div>` : ''}
-        ${benefit.link ? `
-          <div class="benefit-actions">
-            <a class="benefit-link" href="${benefit.link}" target="_blank" rel="noopener noreferrer">Odpri vir</a>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  });
-  
-  content += `
-    </div>
-  `;
-  
-  notification.innerHTML = content;
-  
-  // Add to page
-  document.body.appendChild(notification);
-  
-  // Add event listeners
-  document.getElementById('close-notification').addEventListener('click', () => {
-    notification.remove();
-  });
-  
-  // Add copy button listeners
-  document.querySelectorAll('.copy-button').forEach(button => {
-    button.addEventListener('click', (e) => {
-      const code = e.target.getAttribute('data-code');
-      const index = e.target.getAttribute('data-index');
-      
-      // Copy to clipboard
-      navigator.clipboard.writeText(code).then(() => {
-        e.target.textContent = '✓ Kopirano';
-        e.target.classList.add('copied');
-        
-        setTimeout(() => {
-          e.target.textContent = 'Kopiraj';
-          e.target.classList.remove('copied');
-        }, 2000);
+    const item = el('div', { className: 'benefit-item' + (index > 0 ? ' benefit-divider' : '') },
+      el('div', { className: 'benefit-bank', textContent: benefit.bank }),
+      el('div', { className: 'benefit-discount', textContent: benefit.discount })
+    );
+
+    if (benefit.code) {
+      const copyBtn = el('button', {
+        className: 'copy-button',
+        type: 'button',
+        textContent: 'Kopiraj'
       });
-    });
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(benefit.code).then(() => {
+          copyBtn.textContent = '✓ Kopirano';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.textContent = 'Kopiraj';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+
+      item.appendChild(el('div', { className: 'benefit-code' },
+        el('span', { className: 'code-label', textContent: 'Koda:' }),
+        el('span', { className: 'code-value', textContent: benefit.code }),
+        copyBtn
+      ));
+    }
+
+    if (benefit.conditions) {
+      item.appendChild(el('div', { className: 'benefit-conditions', textContent: benefit.conditions }));
+    }
+
+    if (benefit.link) {
+      const link = el('a', {
+        className: 'benefit-link',
+        href: benefit.link,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        textContent: 'Odpri vir'
+      });
+      item.appendChild(el('div', { className: 'benefit-actions' }, link));
+    }
+
+    body.appendChild(item);
   });
-  
-  // Auto-hide after 15 seconds (optional)
+
+  const notification = el('div', { className: 'bank-benefit-notification', id: 'bank-benefit-notification' },
+    header,
+    body
+  );
+
+  closeBtn.addEventListener('click', () => notification.remove());
+
+  document.body.appendChild(notification);
+
   setTimeout(() => {
     if (document.getElementById('bank-benefit-notification')) {
       notification.style.opacity = '0';
@@ -137,25 +155,27 @@ function showBenefitNotification(benefits) {
   }, 15000);
 }
 
-// Initialize
 async function init() {
-  // Only show notification once per domain per browser session.
-  // sessionStorage is scoped to the tab and cleared when the tab is closed,
-  // so users get notified again on their next visit.
   const sessionKey = `benefit-shown:${getCurrentDomain()}`;
   if (sessionStorage.getItem(sessionKey)) {
     return;
   }
 
-  // Fetch benefits database from background script
-  const response = await EXT.runtime.sendMessage({ action: 'getBenefits' });
+  let response;
+  try {
+    response = await EXT.runtime.sendMessage({ action: 'getBenefits' });
+  } catch (_) {
+    return;
+  }
+
+  if (!response || !response.benefits) {
+    return;
+  }
+
   BENEFITS_DATABASE = response.benefits;
 
-  // Check for benefits on page load
   await checkForBenefits();
 
-  // Mark this domain as notified for the session so subsequent page
-  // navigations on the same site don't trigger another notification.
   sessionStorage.setItem(sessionKey, '1');
 }
 

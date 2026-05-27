@@ -2,8 +2,12 @@
 
 const EXT = typeof browser !== 'undefined' ? browser : chrome;
 
-// Get available banks from benefits database
 const availableBanks = Object.keys(BENEFITS_DATABASE);
+const today = new Date().toISOString().slice(0, 10);
+
+function activeBenefits(bank) {
+  return BENEFITS_DATABASE[bank].filter(b => !b.expires || b.expires >= today);
+}
 
 function pluralize(count, singular, plural) {
   return count === 1 ? singular : plural;
@@ -32,36 +36,52 @@ async function saveSelectedBanks(banks) {
   await EXT.storage.sync.set({ selectedBanks: banks });
 }
 
-// Render bank list
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  if (attrs) {
+    for (const [key, value] of Object.entries(attrs)) {
+      if (key === 'className') node.className = value;
+      else if (key === 'textContent') node.textContent = value;
+      else node.setAttribute(key, value);
+    }
+  }
+  for (const child of children) {
+    if (typeof child === 'string') node.appendChild(document.createTextNode(child));
+    else if (child) node.appendChild(child);
+  }
+  return node;
+}
+
 async function renderBankList() {
   const selectedBanks = await loadSelectedBanks();
   const bankList = document.getElementById('bankList');
-  
+
   bankList.innerHTML = '';
-  
+
   availableBanks.forEach(bank => {
-    const benefitCount = BENEFITS_DATABASE[bank].length;
+    const benefitCount = activeBenefits(bank).length;
     const isSelected = selectedBanks.includes(bank);
-    
-    const bankItem = document.createElement('button');
-    bankItem.type = 'button';
-    bankItem.className = `bank-item ${isSelected ? 'selected' : ''}`;
-    bankItem.dataset.bank = bank;
-    bankItem.setAttribute('aria-pressed', String(isSelected));
-    
-    bankItem.innerHTML = `
-      <div class="bank-checkbox"></div>
-      <div class="bank-info">
-        <div class="bank-name">${bank}</div>
-        <div class="bank-benefits-count">${benefitCount} ${pluralize(benefitCount, 'ugodnost', 'ugodnosti')}</div>
-      </div>
-    `;
-    
+
+    const bankItem = el('button', {
+      type: 'button',
+      className: 'bank-item' + (isSelected ? ' selected' : ''),
+      'data-bank': bank,
+      'aria-pressed': String(isSelected)
+    },
+      el('div', { className: 'bank-checkbox' }),
+      el('div', { className: 'bank-info' },
+        el('div', { className: 'bank-name', textContent: bank }),
+        el('div', {
+          className: 'bank-benefits-count',
+          textContent: benefitCount + ' ' + pluralize(benefitCount, 'ugodnost', 'ugodnosti')
+        })
+      )
+    );
+
     bankItem.addEventListener('click', () => toggleBank(bank));
-    
     bankList.appendChild(bankItem);
   });
-  
+
   updateStats();
 }
 
@@ -86,7 +106,7 @@ async function updateStats() {
   
   let totalBenefits = 0;
   selectedBanks.forEach(bank => {
-    totalBenefits += BENEFITS_DATABASE[bank].length;
+    totalBenefits += activeBenefits(bank).length;
   });
   
   document.getElementById('benefitCount').textContent = totalBenefits;
@@ -105,59 +125,55 @@ async function clearAllBanks() {
   renderBankList();
 }
 
-// Show all benefits modal
 async function showAllBenefits() {
   const selectedBanks = await loadSelectedBanks();
   const modal = document.getElementById('benefitsModal');
   const modalBody = document.getElementById('modalBody');
   const modalSubtitle = document.getElementById('modalSubtitle');
-  
+
   modalBody.innerHTML = '';
   modalSubtitle.textContent = selectedBanks.length === 0
     ? 'Ni izbranih bank'
-    : `${selectedBanks.length} ${pluralize(selectedBanks.length, 'izbrana banka', 'izbrane banke')}`;
-  
+    : selectedBanks.length + ' ' + pluralize(selectedBanks.length, 'izbrana banka', 'izbrane banke');
+
   if (selectedBanks.length === 0) {
-    modalBody.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🏦</div>
-        <div class="empty-state-text">
-          Izberite vsaj eno banko, da si ogledate ugodnosti.
-        </div>
-      </div>
-    `;
+    modalBody.appendChild(
+      el('div', { className: 'empty-state' },
+        el('div', { className: 'empty-state-icon', textContent: '\u{1F3E6}' }),
+        el('div', { className: 'empty-state-text', textContent: 'Izberite vsaj eno banko, da si ogledate ugodnosti.' })
+      )
+    );
   } else {
     selectedBanks.forEach(bank => {
-      const benefits = BENEFITS_DATABASE[bank];
-      
-      const groupDiv = document.createElement('div');
-      groupDiv.className = 'benefit-group';
-      
-      let groupHTML = `<div class="benefit-group-title">${bank}</div>`;
-      
+      const benefits = activeBenefits(bank);
+      const groupDiv = el('div', { className: 'benefit-group' },
+        el('div', { className: 'benefit-group-title', textContent: bank })
+      );
+
       benefits.forEach(benefit => {
-        groupHTML += `
-          <div class="benefit-card">
-            <div class="benefit-merchant">${formatMerchantName(benefit.merchant)}</div>
-            <div class="benefit-discount">${benefit.discount}</div>
-            ${benefit.code ? `
-              <div class="benefit-code-display">
-                <span class="code-label-small">Koda:</span>
-                <span class="code-value-small">${benefit.code}</span>
-              </div>
-            ` : ''}
-            ${benefit.conditions ? `
-              <div class="benefit-conditions-small">${benefit.conditions}</div>
-            ` : ''}
-          </div>
-        `;
+        const card = el('div', { className: 'benefit-card' },
+          el('div', { className: 'benefit-merchant', textContent: formatMerchantName(benefit.merchant) }),
+          el('div', { className: 'benefit-discount', textContent: benefit.discount })
+        );
+
+        if (benefit.code) {
+          card.appendChild(el('div', { className: 'benefit-code-display' },
+            el('span', { className: 'code-label-small', textContent: 'Koda:' }),
+            el('span', { className: 'code-value-small', textContent: benefit.code })
+          ));
+        }
+
+        if (benefit.conditions) {
+          card.appendChild(el('div', { className: 'benefit-conditions-small', textContent: benefit.conditions }));
+        }
+
+        groupDiv.appendChild(card);
       });
-      
-      groupDiv.innerHTML = groupHTML;
+
       modalBody.appendChild(groupDiv);
     });
   }
-  
+
   modal.style.display = 'flex';
 }
 

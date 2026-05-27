@@ -12,9 +12,23 @@ Browser extension that automatically notifies you about available discounts when
 
 ## Installation
 
+### Build First
+
+Generate browser-specific bundles before loading the extension:
+
+```bash
+python3 scripts/build_extension.py
+```
+
+This creates:
+
+- `dist/chrome`
+- `dist/firefox`
+
 ### For Chrome/Edge/Brave/Opera
 
 1. Download or clone this repository
+2. Run `python3 scripts/build_extension.py`
 2. Open your browser and navigate to:
    - **Chrome**: `chrome://extensions/`
    - **Edge**: `edge://extensions/`
@@ -23,18 +37,19 @@ Browser extension that automatically notifies you about available discounts when
 
 3. Enable "Developer mode" (toggle in top-right corner)
 4. Click "Load unpacked"
-5. Select the `bank-benefits-extension` folder (repo root)
+5. Select the `dist/chrome` folder
 6. The extension is now installed! 🎉
 
 ### For Firefox (Temporary Load)
 
 1. Download or clone this repository
+2. Run `python3 scripts/build_extension.py`
 2. Navigate to `about:debugging#/runtime/this-firefox`
 3. Click "Load Temporary Add-on"
-4. Select any file from the `bank-benefits-extension` folder (repo root)
+4. Choose `dist/firefox/manifest.json`
 5. The extension is now installed! 🎉
 
-**Permanent Firefox install**: package and sign the add-on (AMO). Keep the `browser_specific_settings.gecko.id` value in `manifest.json` aligned with your published add-on ID.
+**Permanent Firefox install**: package and sign the add-on (AMO). Keep the `browser_specific_settings.gecko.id` value in `manifests/firefox.json` aligned with your published add-on ID.
 
 ### For Safari (macOS)
 
@@ -137,7 +152,11 @@ Use `--format js` to output `const BENEFITS_DATABASE = ...` for easier manual me
 
 ```
 bank-benefits-extension/
-├── manifest.json          # Extension configuration
+├── manifest.base.json     # Shared manifest fields
+├── manifests/             # Browser-specific manifest overrides
+│   ├── chrome.json
+│   └── firefox.json
+├── manifest.json          # Lightweight local manifest stub
 ├── background.js          # Service worker
 ├── benefits.js            # Benefits database
 ├── content.js            # Content script (runs on web pages)
@@ -145,11 +164,12 @@ bank-benefits-extension/
 ├── popup.html            # Extension popup HTML
 ├── popup.css             # Extension popup styles
 ├── popup.js              # Extension popup logic
-├── scripts/              # Scraper tools (optional)
+├── scripts/              # Scraper and build tools
 ├── icons/                # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
+├── dist/                 # Generated browser builds (ignored in git)
 └── README.md             # This file
 ```
 

@@ -1,0 +1,11 @@
+{
+  "background": {
+    "scripts": ["benefits.js", "background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "bank-benefits-notifier@local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

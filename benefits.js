@@ -4,9 +4,10 @@ const BENEFITS_DATABASE = {
     {
       merchant: 'comma',
       domains: ['comma.si', 'www.comma.si'],
-      discount: '10% popusta vsak torek na novo kolekcijo v trgovinah Comma',
+      discount: '10% popusta vsak torek na novo kolekcijo',
       code: null,
-      conditions: 'Popusti veljajo na redne cene, vsak torek; ne veljajo v spletni trgovini; do 28. 2. 2026.',
+      conditions: 'Vsak torek, samo v trgovinah; ne velja v spletni trgovini.',
+      expires: '2027-02-28',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -14,55 +15,8 @@ const BENEFITS_DATABASE = {
       domains: ['s-oliver.com', 'www.s-oliver.com'],
       discount: '10% popusta vsak torek na novo kolekcijo',
       code: null,
-      conditions: 'Popusti veljajo na redne cene; ne veljajo v spletni trgovini; do 28. 2. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'bodifit',
-      domains: ['bodifit.net', 'www.bodifit.net'],
-      discount: '10% popusta na vadbene karte, BODIFIT pakete in letno naročnino na BODIFIT Play',
-      code: 'OTP10BODIFIT',
-      conditions: 'Pri plačilu s kartico OTP banke; popust ne velja na letno članarino ali mesečne obroke; velja do 28. 2. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'malinca',
-      domains: ['malinca.si', 'www.malinca.si'],
-      discount: '12% popusta na celoten nakup',
-      code: 'OTP12',
-      conditions: 'Plačilo s kartico OTP banke v spletni trgovini; koda v 2. koraku nakupa; ne velja na stroške dostave in bonov; do 2. 11. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago bikes',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '20 € popusta ob sklenitvi letne članarine',
-      code: 'OTPBANKA',
-      conditions: 'Plačilo s kartico OTP banke in uporaba kode; do 15. 10. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago shuttle',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '6% popusta na prevoz do letališča',
-      code: 'OTPBANKA',
-      conditions: 'Plačilo s kartico OTP banke in uporaba kode; do 15. 10. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'festival ljubljana',
-      domains: ['ljubljanafestival.si', 'www.ljubljanafestival.si'],
-      discount: '10% popusta na vstopnice 9. Zimskega festivala',
-      code: 'OTP10',
-      conditions: 'Plačilo s katerokoli kartico OTP banke in kodo; do 1. 3. 2026; popusti se ne seštevajo.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'festival lent',
-      domains: ['nd-mb.si', 'www.nd-mb.si'],
-      discount: '10% popusta na vstopnice Festival Lent',
-      code: null,
-      conditions: 'Pri spletnem nakupu in plačilu s kartico Visa OTP banke; do 30. 4. 2026.',
+      conditions: 'Vsak torek, samo v trgovinah; ne velja v spletni trgovini.',
+      expires: '2027-02-28',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -70,7 +24,8 @@ const BENEFITS_DATABASE = {
       domains: ['peaksport.si', 'www.peaksport.si'],
       discount: '25% popusta na redne cene',
       code: 'OTPBANKA25',
-      conditions: 'Plačilo s kartico OTP banke v spletni trgovini; do 10. 8. 2026.',
+      conditions: 'Plačilo s kartico OTP banke v spletni trgovini.',
+      expires: '2026-08-10',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -78,111 +33,26 @@ const BENEFITS_DATABASE = {
       domains: ['primozroglic.com', 'www.primozroglic.com'],
       discount: '20% popusta na izbrane izdelke',
       code: 'OTP20PR',
-      conditions: 'Plačilo s kartico OTP banke v spletni trgovini; do 31. 12. 2026.',
+      conditions: 'Plačilo s kartico OTP banke v spletni trgovini.',
+      expires: '2026-12-31',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
-      merchant: 'hajdi.si',
-      domains: ['hajdi.si', 'www.hajdi.si'],
-      discount: '15% popusta na redne cene',
-      code: 'OTP15',
-      conditions: 'Plačilo s kartico OTP banke; velja tudi v fizičnih trgovinah; do 31. 5. 2026; ne velja na določene izdelke in stroške dostave.',
+      merchant: 'bodifit',
+      domains: ['bodifit.net', 'www.bodifit.net'],
+      discount: '10% popusta na vadbene karte, pakete in letno naročnino BODIFIT Play',
+      code: 'OTP10BODIFIT',
+      conditions: 'Samo za nove člane; ne velja na mesečne obroke.',
+      expires: '2027-02-28',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
       merchant: 'optika clarus',
       domains: ['clarus.si', 'www.clarus.si'],
-      discount: '10% popusta vsak 1. in 3. sreda v mesecu',
+      discount: '10% popusta na redne cene',
       code: null,
-      conditions: 'Plačilo s kartico OTP banke v poslovalnicah; do 28. 2. 2026; ne velja na darilne bone ali spletno trgovino.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'urban boutique hotel',
-      domains: ['secure-hotel-booking.com'],
-      discount: '10% popusta na nočitve z zajtrkom',
-      code: 'OTP10',
-      conditions: 'Rezervacija preko spletne strani in plačilo s kartico OTP banke; do 31. 10. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'zumma kids',
-      domains: ['zummakids.si', 'www.zummakids.si'],
-      discount: '20% popusta na vstopnice (pon–pet)',
-      code: null,
-      conditions: 'Plačilo s kartico OTP banke; do 1. 7. 2026; ne velja na rojstnodnevne zabave in nekatere storitve.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'norma bio',
-      domains: ['norma.si', 'www.norma.si'],
-      discount: '10% vikend popust (pet–ned)',
-      code: 'OTP10',
-      conditions: 'Plačilo s kartico OTP banke in kodo; do 31. 5. 2026; ne velja za dostavo.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: "l'erboristica e-co",
-      domains: ['e-co.si', 'www.e-co.si'],
-      discount: '20% popusta na naravno kozmetiko + brezplačna poštnina',
-      code: 'OTP20',
-      conditions: 'Nakup nad 30 EUR; plačilo s kartico OTP banke; do 28. 2. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'spleticna.si',
-      domains: ['spleticna.si', 'www.spleticna.si'],
-      discount: '10% popusta pri nakupu nad 99 EUR',
-      code: 'SPL10-VISA',
-      conditions: 'Plačilo s kartico Visa OTP banke; do 31. 12. 2026; ne velja na e-darilne bone in FOREO izdelke.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'afrodita',
-      domains: ['afrodita.eu', 'www.afrodita.eu'],
-      discount: '10% popusta na izdelke Afrodita',
-      code: 'VISA-AFRODITA10',
-      conditions: 'Plačilo s katerokoli Visa OTP kartico; do 31. 12. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago young/ISIC',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '100 € popusta na programe poletnega dela + 2% popusta na Camp California',
-      code: 'OTPBANKA',
-      conditions: 'Plačilo s kartico OTP banke; do 15. 10. 2026; nekatere storitve se uveljavljajo preko poslovalnic Nomago Travel.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'amadria park hotels & camps',
-      domains: ['amadria-park.com', 'www.amadria-park.com'],
-      discount: 'do 15% popusta na nočitve + do 10% popusta na redne cene',
-      code: 'AMPVISA',
-      conditions: 'Rezervacija preko uradnih strani z uporabo kode; do 31. 12. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'airalo',
-      domains: ['airalo.com', 'www.airalo.com'],
-      discount: '15% popusta na vse eSIM pakete',
-      code: 'VISA15-SLO',
-      conditions: 'Plačilo s kartico Visa OTP banke; do 31. 12. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'travelcentive',
-      domains: ['travelcentive.com', 'www.travelcentive.com'],
-      discount: '7% popusta na rezervacije potovanj',
-      code: null,
-      conditions: 'Plačilo s kartico Visa OTP banke; do 31. 12. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago travel',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '10% popusta na vodena potovanja + 100 € popusta za namestitve nad 1000 €',
-      code: 'OTPBANKA',
-      conditions: 'Plačilo s kartico OTP banke; do 15. 10. 2026; ne velja za Fly&Stay.',
+      conditions: 'Vsako 1. in 3. sredo v mesecu; samo v poslovalnicah.',
+      expires: '2027-02-28',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -190,7 +60,197 @@ const BENEFITS_DATABASE = {
       domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
       discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
       code: null,
-      conditions: 'Plačilo s kartico Visa OTP banke; do 29. 12. 2026; ne velja na paketne ponudbe.',
+      conditions: 'Predhodna rezervacija na 03 78 08 555 ali lavita@terme-dobrna.si; ne velja na paketne ponudbe.',
+      expires: '2026-12-29',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: "l'erboristica e-co",
+      domains: ['e-co.si', 'www.e-co.si'],
+      discount: '20% popusta na naravno kozmetiko + brezplačna poštnina',
+      code: 'OTP20',
+      conditions: 'Nakup nad 30 EUR; plačilo s kartico OTP banke.',
+      expires: '2027-02-28',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'afrodita',
+      domains: ['webshop.afroditacosmetics.com', 'afrodita.eu', 'www.afrodita.eu'],
+      discount: '10% popusta na izdelke Afrodita',
+      code: 'VISA-AFRODITA10',
+      conditions: 'Plačilo s katerokoli Visa OTP kartico.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'spleticna.si',
+      domains: ['spleticna.si', 'www.spleticna.si'],
+      discount: '10% popusta pri nakupu nad 99 EUR',
+      code: 'SPL10-VISA',
+      conditions: 'Ne velja na e-darilne bone in FOREO izdelke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'coincasa',
+      domains: ['coincasa.si', 'www.coincasa.si'],
+      discount: '10% popusta',
+      code: 'VISA10',
+      conditions: 'V spletni trgovini z kodo VISA10 ali v trgovini Supernova Šiška Ljubljana.',
+      expires: '2026-09-30',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'norma bio',
+      domains: ['norma.si', 'www.norma.si'],
+      discount: '10% vikend popust (pet–ned)',
+      code: 'OTP10',
+      conditions: 'Samo spletna naročila; ne velja za dostavo.',
+      expires: '2026-05-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'malinca',
+      domains: ['malinca.si', 'www.malinca.si'],
+      discount: '12% popusta na celoten nakup',
+      code: 'OTP12',
+      conditions: 'Spletna trgovina; koda v 2. koraku nakupa; ne velja na stroške dostave in bonov.',
+      expires: '2026-11-02',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'airalo',
+      domains: ['airalo.com', 'www.airalo.com'],
+      discount: '15% popusta na vse eSIM pakete',
+      code: 'VISA15-SLO',
+      conditions: 'Plačilo s kartico Visa OTP banke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'travelcentive',
+      domains: ['travelcentive.com', 'www.travelcentive.com', 'si.travelcentive.com'],
+      discount: '7% popusta na rezervacije potovanj',
+      code: null,
+      conditions: 'Popust se samodejno uporabi; plačilo s kartico Visa OTP banke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'nomago travel',
+      domains: ['nomago.si', 'www.nomago.si'],
+      discount: '10% popusta na vodena potovanja + 100 € popusta za namestitve nad 1000 €',
+      code: 'OTPBANKA',
+      conditions: 'Spletna rezervacija ali izbrane poslovalnice; ne velja za Fly&Stay.',
+      expires: '2026-10-15',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'amadria park hotels',
+      domains: ['amadriapark.com', 'www.amadriapark.com', 'amadria-park.com', 'www.amadria-park.com'],
+      discount: 'do 15% popusta na nočitve + do 10% popusta na redne cene',
+      code: 'AMPVISA',
+      conditions: 'Rezervacija preko uradnih spletnih strani.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'amadria park camping',
+      domains: ['amadriaparkcamping.com', 'www.amadriaparkcamping.com'],
+      discount: 'do 15% popusta na nočitve + do 10% popusta na redne cene',
+      code: 'AMPVISA',
+      conditions: 'Rezervacija preko uradnih spletnih strani.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'bohinj eco hotel',
+      domains: ['bohinj-eco-hotel.si', 'www.bohinj-eco-hotel.si'],
+      discount: '10% popusta na nočitve',
+      code: 'OTP10',
+      conditions: 'Neposredna spletna rezervacija; katerakoli osebna kartica OTP banke.',
+      expires: '2026-07-01',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'urban boutique hotel',
+      domains: ['urbanhotel.si', 'www.urbanhotel.si', 'secure-hotel-booking.com'],
+      discount: '10% popusta na nočitve z zajtrkom',
+      code: 'OTP10',
+      conditions: 'Rezervacija preko spletne strani.',
+      expires: '2026-10-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'nomago shuttle',
+      domains: ['nomago.si', 'www.nomago.si'],
+      discount: '6% popusta na prevoz do letališča',
+      code: 'OTPBANKA',
+      conditions: 'Spletna rezervacija.',
+      expires: '2026-10-15',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'nomago bikes',
+      domains: ['nomago.si', 'www.nomago.si'],
+      discount: '20 € popusta ob sklenitvi letne članarine + 30 min brezplačne vožnje',
+      code: 'OTPBANKA',
+      conditions: 'Spletna rezervacija ali izbrane poslovalnice.',
+      expires: '2026-10-15',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'zumma kids',
+      domains: ['zummakids.si', 'www.zummakids.si'],
+      discount: '20% popusta na vstopnice (pon–pet)',
+      code: null,
+      conditions: 'Ne velja na rojstnodnevne zabave in darilne bone.',
+      expires: '2026-07-01',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'hajdi.si',
+      domains: ['hajdi.si', 'www.hajdi.si'],
+      discount: '15% popusta na redne cene',
+      code: 'OTP15',
+      conditions: 'Spletna in fizične trgovine; ne velja na Bugaboo izdelke, znižane artikle in darilne bone.',
+      expires: '2026-05-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'office&more',
+      domains: ['officeandmore.si', 'www.officeandmore.si'],
+      discount: '15% popusta na redne cene',
+      code: 'OTP15',
+      conditions: 'Samo spletna trgovina; ne velja na knjige, učbenike in delovne zvezke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'go2school.com',
+      domains: ['go2school.com', 'www.go2school.com'],
+      discount: '15% popusta na redne cene',
+      code: 'OTP15',
+      conditions: 'Samo spletna trgovina; ne velja na knjige, učbenike in delovne zvezke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'bags&more',
+      domains: ['bagsandmore.si', 'www.bagsandmore.si'],
+      discount: '15% popusta na redne cene',
+      code: 'OTP15',
+      conditions: 'Samo spletna trgovina; ne velja na "mega price" izdelke in knjige.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'festival 202',
+      domains: ['kinosiska.si', 'www.kinosiska.si', 'eventim.si', 'www.eventim.si'],
+      discount: '10% popusta na enodnevne vstopnice',
+      code: 'OTPBANKA10',
+      conditions: 'Spletni nakup preko Eventim.',
+      expires: '2026-06-05',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -198,12 +258,37 @@ const BENEFITS_DATABASE = {
       domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
       discount: '10% popusta na izbrana doživetja',
       code: null,
-      conditions: 'Plačilo s kartico Visa OTP banke; do 31. 12. 2026.',
+      conditions: 'Plačilo s kartico Visa OTP banke.',
+      expires: '2026-12-31',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'nomago young/ISIC',
+      domains: ['nomago.si', 'www.nomago.si'],
+      discount: '100 € popusta na programe poletnega dela + 2% popusta na Camp California',
+      code: 'OTPBANKA',
+      conditions: 'Izbrane poslovalnice Nomago Travel.',
+      expires: '2026-10-15',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'ISIC kartica',
+      domains: ['isic.si', 'www.isic.si'],
+      discount: '5 € popusta na digitalno ISIC/IYTC/ITIC kartico',
+      code: 'OTPBANKA',
+      conditions: 'Spletno naročilo ali izbrane poslovalnice Nomago Travel.',
+      expires: '2026-10-15',
+      link: 'https://www.otpbanka.si/visa-ugodnosti'
+    },
+    {
+      merchant: 'air refund',
+      domains: ['airrefund.com', 'www.airrefund.com'],
+      discount: 'Znižana provizija za uveljavljanje odškodnin za zamude/odpovedi letov',
+      code: null,
+      conditions: 'Let kupljen s kartico Visa OTP banke; odškodnine za lete v EU.',
+      expires: null,
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     }
-
-
-    // Add more OTP benefits here
   ],
   'NLB': [
     {
@@ -230,14 +315,6 @@ const BENEFITS_DATABASE = {
       conditions: 'Ekskluzivno za NLB stranke; uporaba kode OLI20 pri nakupu.',
       link: 'https://vstopnice.olimpija.com/cedevitaolimpija/si/isci/?country=SVN&lang=si'
     },
-    {
-      merchant: 'sašo avsenik z ansamblom',
-      domains: ['eventim.si', 'www.eventim.si'],
-      discount: '10% popusta na vstopnice',
-      code: null,
-      conditions: 'Koncert 20. 12. 2025 v Areni Stožice; omejeno na 200 kart na sektor; ob nakupu izbrati "Imetniki kartic NLB".',
-      link: 'https://www.eventim.si/event/ansambel-sasa-avsenika-dvorana-stozice-20209613/'
-    }
   ],
   'SKB': [
     // Add SKB benefits here
@@ -378,14 +455,6 @@ const BENEFITS_DATABASE = {
         link: 'https://www.amadriapark.com/hotel_category/all/'
       },
       {
-        merchant: 'cukrarna gallery',
-        domains: ['cukrarna.org', 'www.cukrarna.org'],
-        discount: '10% popusta na vse izdelke iz kolekcije Cukrarna',
-        code: null,
-        conditions: 'Velja v spletni in fizični trgovini na recepciji galerije; oblikovalski izdelki, umetniški katalogi in spominki; velja od 30.11.2025 do 03.05.2026.',
-        link: 'https://www.cukrarna.org'
-      },
-      {
         merchant: 'spleticna.si',
         domains: ['spleticna.si', 'www.spleticna.si'],
         discount: '10% popusta pri nakupu nad 99 EUR',
@@ -482,14 +551,6 @@ const BENEFITS_DATABASE = {
         code: 'AMPVISA',
         conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
         link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'cukrarna gallery',
-        domains: ['cukrarna.org', 'www.cukrarna.org'],
-        discount: '10% popusta na vse izdelke iz kolekcije Cukrarna',
-        code: null,
-        conditions: 'Velja v spletni in fizični trgovini na recepciji galerije; oblikovalski izdelki, umetniški katalogi in spominki; velja od 30.11.2025 do 03.05.2026.',
-        link: 'https://www.cukrarna.org'
       },
       {
         merchant: 'spleticna.si',
@@ -612,14 +673,6 @@ const BENEFITS_DATABASE = {
         code: 'AMPVISA',
         conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
         link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'cukrarna gallery',
-        domains: ['cukrarna.org', 'www.cukrarna.org'],
-        discount: '10% popusta na vse izdelke iz kolekcije Cukrarna',
-        code: null,
-        conditions: 'Velja v spletni in fizični trgovini na recepciji galerije; oblikovalski izdelki, umetniški katalogi in spominki; velja od 30.11.2025 do 03.05.2026.',
-        link: 'https://www.cukrarna.org'
       },
       {
         merchant: 'spleticna.si',
@@ -750,14 +803,6 @@ const BENEFITS_DATABASE = {
         code: 'AMPVISA',
         conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
         link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'cukrarna gallery',
-        domains: ['cukrarna.org', 'www.cukrarna.org'],
-        discount: '10% popusta na vse izdelke iz kolekcije Cukrarna',
-        code: null,
-        conditions: 'Velja v spletni in fizični trgovini na recepciji galerije; oblikovalski izdelki, umetniški katalogi in spominki; velja od 30.11.2025 do 03.05.2026.',
-        link: 'https://www.cukrarna.org'
       },
       {
         merchant: 'spleticna.si',

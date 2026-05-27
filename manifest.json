@@ -2,41 +2,8 @@
   "manifest_version": 3,
   "name": "Bank Card Benefits Notifier",
   "version": "1.0.0",
-  "description": "Get notified about discounts available with your bank cards",
-  "permissions": [
-    "storage",
-    "activeTab"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "description": "Generated file. Use manifest.base.json plus manifests/*.json and run the build script.",
   "background": {
     "service_worker": "background.js"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "bank-benefits-notifier@local",
-      "strict_min_version": "109.0"
-    }
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["notification.css"]
-    }
-  ],
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
   }
 }
