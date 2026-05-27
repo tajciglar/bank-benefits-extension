@@ -1,4 +1,249 @@
 // benefits.js - Database of bank benefits
+
+// ── Shared Visa benefit objects (defined once, referenced by each tier) ──
+
+const _booking = {
+  merchant: 'booking.com',
+  domains: ['booking.com', 'www.booking.com'],
+  discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
+  code: null,
+  conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje v istem obdobju; maks. 200 EUR na rezervacijo; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
+  expires: '2026-06-30',
+  link: null
+};
+
+const _airalo = {
+  merchant: 'airalo',
+  domains: ['airalo.com', 'www.airalo.com'],
+  discount: '15% popusta na vse eSIM pakete',
+  code: 'VISA15-SLO',
+  conditions: 'Dostop do eSIM v več kot 200 državah.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _spleticna = {
+  merchant: 'spleticna.si',
+  domains: ['spleticna.si', 'www.spleticna.si'],
+  discount: '10% popusta pri nakupu nad 99 EUR',
+  code: 'SPL10-VISA',
+  conditions: 'Ne velja na e-darilne bone in FOREO izdelke.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _travelcentive = {
+  merchant: 'travelcentive',
+  domains: ['travelcentive.com', 'www.travelcentive.com', 'si.travelcentive.com'],
+  discount: '7% popusta na rezervacije potovanj in letov',
+  code: null,
+  conditions: 'Popust se samodejno uporabi.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _afrodita = {
+  merchant: 'afrodita',
+  domains: ['webshop.afroditacosmetics.com', 'afrodita.eu', 'www.afrodita.eu'],
+  discount: '10% popusta na izdelke Afrodita',
+  code: 'VISA-AFRODITA10',
+  conditions: 'Plačilo s katerokoli Visa kartico.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _amadriaPark = {
+  merchant: 'amadria park',
+  domains: ['amadriapark.com', 'www.amadriapark.com', 'amadria-park.com', 'www.amadria-park.com'],
+  discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
+  code: 'AMPVISA',
+  conditions: 'Rezervacija preko uradnih spletnih strani; hoteli v Opatiji, Šibeniku in Zagrebu.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _ljubljanskiGrad = {
+  merchant: 'ljubljanski grad',
+  domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
+  discount: '10% popusta na izbrana doživetja (Časovni stroj)',
+  code: null,
+  conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94 ali virtualni-grad@ljubljanskigrad.si.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _termeDobrna = {
+  merchant: 'terme dobrna',
+  domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
+  discount: '20% popusta na bivanje s polpenzionom',
+  code: 'VISA20',
+  conditions: 'Rezervacija preko tel. 080 22 10 ali info@terme-dobrna.si; min. 2 noči; popusti se ne seštevajo.',
+  expires: '2026-12-30',
+  link: null
+};
+
+const _termeDobrnaSpa = {
+  merchant: 'terme dobrna - spa storitve',
+  domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
+  discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
+  code: null,
+  conditions: 'Ne velja na paketne in akcijske ponudbe.',
+  expires: '2026-12-29',
+  link: null
+};
+
+const _avis = {
+  merchant: 'avis',
+  domains: ['avisworld.com', 'www.avisworld.com'],
+  discount: 'Do 20% popusta + brezplačna nadgradnja + Avis Preferred Plus (brezplačno)',
+  code: null,
+  conditions: 'Rezervacija neposredno na avisworld.com.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _rimskeTreme = {
+  merchant: 'rimske terme',
+  domains: ['rimske-terme.si', 'www.rimske-terme.si'],
+  discount: '30% popusta na LUX PAKET',
+  code: null,
+  conditions: 'Rezervacija preko tel. 03 574 2000 ali booking@rimske-terme.si.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _fastTrack = {
+  merchant: 'fast track services',
+  domains: [],
+  discount: 'Hitrejši prehod varnostnih kontrol na letališčih',
+  code: null,
+  conditions: 'Dostopno na izbranih mednarodnih letališčih.',
+  expires: null,
+  link: null
+};
+
+const _extendedWarranty = {
+  merchant: 'extended warranty',
+  domains: [],
+  discount: 'Podaljšano jamstvo na nakupe',
+  code: null,
+  conditions: 'Dodatno leto jamstva na izdelke.',
+  expires: null,
+  link: null
+};
+
+const _visaConcierge = {
+  merchant: 'visa concierge',
+  domains: [],
+  discount: '24/7 asistenčna služba',
+  code: null,
+  conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje.',
+  expires: null,
+  link: null
+};
+
+const _purchaseProtection = {
+  merchant: 'purchase protection',
+  domains: [],
+  discount: 'Zaščita nakupov',
+  code: null,
+  conditions: 'Kritje za poškodovano ali ukradeno blago.',
+  expires: null,
+  link: null
+};
+
+const _impresiaHoteli = {
+  merchant: 'impresia hoteli',
+  domains: [],
+  discount: 'Nadgradnja sobe, zgodnji check-in, pozni check-out',
+  code: 'VISAIMPRESIA',
+  conditions: 'Uporabite kodo VISAIMPRESIA pri rezervaciji v izbranem hotelu Impresia.',
+  expires: '2027-06-30',
+  link: null
+};
+
+const _hotelBohinj = {
+  merchant: 'hotel bohinj',
+  domains: ['hotelbohinj.si', 'www.hotelbohinj.si'],
+  discount: '10% popusta na nočitev',
+  code: 'VISA10',
+  conditions: 'Rezervacija in plačilo s kartico Visa.',
+  expires: '2027-03-31',
+  link: null
+};
+
+const _gourmetVilaMuhr = {
+  merchant: 'gourmet vila muhr',
+  domains: [],
+  discount: '10% popusta na večerjo',
+  code: null,
+  conditions: 'Rezervacija po e-pošti; samo za imetnike kartic Visa.',
+  expires: '2027-03-31',
+  link: null
+};
+
+const _hotelBellevue = {
+  merchant: 'hotel bellevue',
+  domains: ['losinj-hotels.com', 'www.losinj-hotels.com'],
+  discount: '10% popusta na najboljšo razpoložljivo ceno',
+  code: 'VISA26',
+  conditions: 'Rezervacija namestitve v Hotel Bellevue, Lošinj.',
+  expires: '2027-03-31',
+  link: null
+};
+
+const _villaGiardinoBol = {
+  merchant: 'villa giardino bol',
+  domains: ['villagiardinobol.com', 'www.villagiardinobol.com'],
+  discount: '20% popusta + prosecco ob prihodu',
+  code: 'VISA20VGB',
+  conditions: 'Rezervacija in plačilo s kartico Visa.',
+  expires: '2027-10-31',
+  link: null
+};
+
+const _qushinPets = {
+  merchant: 'qushin pets',
+  domains: ['qushin.eu', 'www.qushin.eu'],
+  discount: '10% popusta na PETS kolekcijo',
+  code: 'VISA-PETS10',
+  conditions: 'Spletni nakup.',
+  expires: null,
+  link: null
+};
+
+const _freywille = {
+  merchant: 'freywille',
+  domains: [],
+  discount: '10% popusta v butiku FREYWILLE Ljubljana',
+  code: null,
+  conditions: 'Samo v fizični trgovini v Ljubljani; plačilo s kartico Visa.',
+  expires: '2026-12-31',
+  link: null
+};
+
+const _avg = {
+  merchant: 'avg',
+  domains: ['avg.com', 'www.avg.com'],
+  discount: '75% popusta na varnostne rešitve AVG',
+  code: null,
+  conditions: 'Plačilo s kartico Visa.',
+  expires: '2026-07-31',
+  link: null
+};
+
+const _visaLuxuryHotel = {
+  merchant: 'visa luxury hotel collection',
+  domains: ['visaluxuryhotelcollection.com', 'www.visaluxuryhotelcollection.com'],
+  discount: 'Ekskluzivne ugodnosti: zajtrk za dva, VIP status, nadgradnja sobe',
+  code: null,
+  conditions: 'Rezervacija prek visaluxuryhotelcollection.com; plačilo s kartico Visa.',
+  expires: '2027-03-31',
+  link: null
+};
+
+// ── Benefits database ──
+
 const BENEFITS_DATABASE = {
   'OTP Banka': [
     {
@@ -137,11 +382,11 @@ const BENEFITS_DATABASE = {
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
-      merchant: 'nomago travel',
+      merchant: 'nomago',
       domains: ['nomago.si', 'www.nomago.si'],
-      discount: '10% popusta na vodena potovanja + 100 € popusta za namestitve nad 1000 €',
+      discount: 'Več ugodnosti: 10% na vodena potovanja, 6% na shuttle, 20 € na bikes letno članarino, 100 € na poletno delo USA',
       code: 'OTPBANKA',
-      conditions: 'Spletna rezervacija ali izbrane poslovalnice; ne velja za Fly&Stay.',
+      conditions: 'Spletna rezervacija ali izbrane poslovalnice; več ponudb na eni strani.',
       expires: '2026-10-15',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
@@ -179,24 +424,6 @@ const BENEFITS_DATABASE = {
       code: 'OTP10',
       conditions: 'Rezervacija preko spletne strani.',
       expires: '2026-10-31',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago shuttle',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '6% popusta na prevoz do letališča',
-      code: 'OTPBANKA',
-      conditions: 'Spletna rezervacija.',
-      expires: '2026-10-15',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
-      merchant: 'nomago bikes',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '20 € popusta ob sklenitvi letne članarine + 30 min brezplačne vožnje',
-      code: 'OTPBANKA',
-      conditions: 'Spletna rezervacija ali izbrane poslovalnice.',
-      expires: '2026-10-15',
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
@@ -263,15 +490,6 @@ const BENEFITS_DATABASE = {
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     },
     {
-      merchant: 'nomago young/ISIC',
-      domains: ['nomago.si', 'www.nomago.si'],
-      discount: '100 € popusta na programe poletnega dela + 2% popusta na Camp California',
-      code: 'OTPBANKA',
-      conditions: 'Izbrane poslovalnice Nomago Travel.',
-      expires: '2026-10-15',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
-    },
-    {
       merchant: 'ISIC kartica',
       domains: ['isic.si', 'www.isic.si'],
       discount: '5 € popusta na digitalno ISIC/IYTC/ITIC kartico',
@@ -290,13 +508,15 @@ const BENEFITS_DATABASE = {
       link: 'https://www.otpbanka.si/visa-ugodnosti'
     }
   ],
+
   'NLB': [
     {
       merchant: 'nordijski center planica',
       domains: ['nc-planica.si', 'www.nc-planica.si'],
       discount: '50% popusta za tek na smučeh v podzemnem tunelu (poleti) ali 10% popusta za tek zunaj (pozimi)',
       code: null,
-      conditions: 'Samo za imetnike NLB Mastercard; samo za dnevne vstopnice; nakup na blagajni NC Planica; 20% popust za invalide in osebe s posebnimi potrebami na muzej in sedežnico.',
+      conditions: 'Samo za imetnike NLB Mastercard; samo za dnevne vstopnice; nakup na blagajni NC Planica.',
+      expires: null,
       link: 'https://www.nc-planica.si/'
     },
     {
@@ -305,6 +525,7 @@ const BENEFITS_DATABASE = {
       discount: '5 € popusta na štartnino',
       code: null,
       conditions: 'Plačilo z NLB plačilno kartico.',
+      expires: null,
       link: 'https://registration.ljubljanskimaraton.si/si/celotna-ponudba.html'
     },
     {
@@ -313,608 +534,148 @@ const BENEFITS_DATABASE = {
       discount: '20% popusta na vstopnice',
       code: 'OLI20',
       conditions: 'Ekskluzivno za NLB stranke; uporaba kode OLI20 pri nakupu.',
+      expires: null,
       link: 'https://vstopnice.olimpija.com/cedevitaolimpija/si/isci/?country=SVN&lang=si'
+    }
+  ],
+
+  'Visa Classic': [
+    _booking, _amadriaPark, _afrodita, _spleticna, _travelcentive,
+    _ljubljanskiGrad, _airalo, _termeDobrna, _purchaseProtection
+  ],
+
+  'Visa Gold': [
+    _booking, _afrodita, _avis, _airalo, _termeDobrna, _termeDobrnaSpa,
+    _ljubljanskiGrad, _amadriaPark, _spleticna, _travelcentive,
+    _rimskeTreme, _visaConcierge, _purchaseProtection,
+    _impresiaHoteli, _hotelBohinj, _gourmetVilaMuhr, _hotelBellevue,
+    _villaGiardinoBol, _qushinPets, _freywille, _avg, _visaLuxuryHotel
+  ],
+
+  'Visa Platinum': [
+    _booking, _avis, _airalo, _termeDobrna, _termeDobrnaSpa,
+    _ljubljanskiGrad, _amadriaPark, _spleticna, _travelcentive,
+    _rimskeTreme,
+    {
+      merchant: 'airport lounges worldwide',
+      domains: ['dragonpass.com', 'loungekey.com'],
+      discount: 'Dostop do poslovnih salonov na letališčih - 2x letno',
+      code: null,
+      conditions: null,
+      expires: '2026-09-30',
+      link: null
     },
+    _visaConcierge, _fastTrack, _extendedWarranty, _purchaseProtection,
+    _impresiaHoteli, _hotelBohinj, _gourmetVilaMuhr, _hotelBellevue,
+    _villaGiardinoBol, _qushinPets, _freywille, _avg, _visaLuxuryHotel
   ],
-  'SKB': [
-    // Add SKB benefits here
-  ],
-  'UniCredit': [
-    // Add UniCredit benefits here
-  ],
-    'Visa Classic': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'amadria park',
-        domains: ['amadriapark.com', 'www.amadriapark.com'],
-        discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
-        code: 'AMPVISA',
-        conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
-        link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-      merchant: 'afrodita',
-      domains: ['afrodita.eu', 'www.afrodita.eu'],
-      discount: '10% popusta na izdelke Afrodita',
-      code: 'VISA-AFRODITA10',
-      conditions: 'Plačilo s katerokoli Visa OTP kartico; do 31. 12. 2026.',
-      link: 'https://www.otpbanka.si/visa-ugodnosti'
+
+  'Visa Signature': [
+    _booking, _avis, _airalo, _termeDobrna, _termeDobrnaSpa,
+    _ljubljanskiGrad, _amadriaPark, _spleticna, _travelcentive,
+    _rimskeTreme,
+    {
+      merchant: 'airport lounges worldwide',
+      domains: ['dragonpass.com', 'loungekey.com'],
+      discount: 'Dostop do poslovnih salonov na letališčih - 10x letno',
+      code: null,
+      conditions: null,
+      expires: '2026-09-30',
+      link: null
     },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-      {
-        merchant: 'ljubljanski grad',
-        domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
-        discount: '10% popusta na izbrana doživetja (Časovni stroj)',
-        code: null,
-        conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94, 041 732 654 ali virtualni-grad@ljubljanskigrad.si; velja do 31.12.2026.',
-        link: 'https://www.ljubljanskigrad.si/sl/izberi-dozivetje/casovni-stroj/'
-      },
-      {
-        merchant: 'airalo',
-        domains: ['airalo.com', 'www.airalo.com'],
-        discount: '15% popusta na vse eSIM pakete',
-        code: 'VISA15-SLO',
-        conditions: 'Velja od 02.01.2025 do 31.12.2026; dostop do rešitev povezljivosti v več kot 200 državah in regijah.',
-        link: 'https://www.airalo.com'
-      },
-      {
-        merchant: 'terme dobrna',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '20% popusta na bivanje s polpenzionom',
-        code: 'VISA20',
-        conditions: 'Rezervacija preko tel. 080 22 10 ali 03 78 08 110 ali info@terme-dobrna.si ali www.terme-dobrna.si z kodo VISA20; minimalno bivanje 2 noči; plačilo z Visa kartico; popusti se ne seštevajo; velja do 30.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-     
-    ],
-    'Visa Gold': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'afrodita',
-        domains: ['afrodita.eu', 'www.afrodita.eu'],
-        discount: '10% popusta na izdelke Afrodita',
-        code: 'VISA-AFRODITA10',
-        conditions: 'Plačilo s katerokoli Visa OTP kartico; do 31. 12. 2026.',
-        link: 'https://www.otpbanka.si/visa-ugodnosti'
-      },
-      {
-        merchant: 'avis',
-        domains: ['avisworld.com', 'www.avisworld.com'],
-        discount: 'Do 20% popusta + brezplačna nadgradnja + Avis Preferred Plus membership (brezplačno)',
-        code: null,
-        conditions: 'Rezervacija neposredno na Visa (avisworld.com); velja od 01.01.2022 do 31.12.2026.',
-        link: 'https://www.avisworld.com'
-      },
-      {
-        merchant: 'airalo',
-        domains: ['airalo.com', 'www.airalo.com'],
-        discount: '15% popusta na vse eSIM pakete',
-        code: 'VISA15-SLO',
-        conditions: 'Velja od 02.01.2025 do 31.12.2026; dostop do rešitev povezljivosti v več kot 200 državah in regijah.',
-        link: 'https://www.airalo.com'
-      },
-      {
-        merchant: 'terme dobrna',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '20% popusta na bivanje s polpenzionom',
-        code: 'VISA20',
-        conditions: 'Rezervacija preko tel. 080 22 10 ali 03 78 08 110 ali info@terme-dobrna.si ali www.terme-dobrna.si z kodo VISA20; minimalno bivanje 2 noči; plačilo z Visa kartico; popusti se ne seštevajo; velja do 30.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'terme dobrna - spa storitve',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
-        code: null,
-        conditions: 'Velja na masaže, lepotne tretmaje obraza, dlani in stopal, depilacije, maderoterapijo, nego telesa, tretmaje trepalnic in obrvi ter ličenje; ne velja na paketne in akcijske ponudbe; velja do 29.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'ljubljanski grad',
-        domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
-        discount: '10% popusta na izbrana doživetja (Časovni stroj)',
-        code: null,
-        conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94, 041 732 654 ali virtualni-grad@ljubljanskigrad.si; velja do 31.12.2026.',
-        link: 'https://www.ljubljanskigrad.si/sl/izberi-dozivetje/casovni-stroj/'
-      },
-      {
-        merchant: 'amadria park',
-        domains: ['amadriapark.com', 'www.amadriapark.com'],
-        discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
-        code: 'AMPVISA',
-        conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
-        link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-      {
-        merchant: 'rimske terme',
-        domains: ['rimske-terme.si', 'www.rimske-terme.si'],
-        discount: '30% popusta na LUX PAKET',
-        code: null,
-        conditions: 'Rezervacija preko tel. 03 574 2000, 03 574 2011 ali booking@rimske-terme.si; luksuzna nastanitev z izbranimi storitvami; velja do 31.12.2026.',
-        link: 'https://www.rimske-terme.si'
-      },
-      {
-        merchant: 'visa concierge',
-        domains: ['visa.com.ua', 'www.visa.com.ua', 'visa.com'],
-        discount: '24/7 asistenčna služba',
-        code: null,
-        conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje.',
-        link: null
-      },
-      {
-        merchant: 'purchase protection',
-        domains: [],
-        discount: 'Zaščita nakupov',
-        code: null,
-        conditions: 'Kritje za poškodovano ali ukradeno blago.',
-        link: null
-      }
-    ],
-    'Visa Platinum': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'avis',
-        domains: ['avisworld.com', 'www.avisworld.com'],
-        discount: 'Do 20% popusta + brezplačna nadgradnja + Avis Preferred Plus membership (brezplačno)',
-        code: null,
-        conditions: 'Rezervacija neposredno na Visa (avisworld.com); velja od 01.01.2022 do 31.12.2026.',
-        link: 'https://www.avisworld.com'
-      },
-      {
-        merchant: 'airalo',
-        domains: ['airalo.com', 'www.airalo.com'],
-        discount: '15% popusta na vse eSIM pakete',
-        code: 'VISA15-SLO',
-        conditions: 'Velja od 02.01.2025 do 31.12.2026; dostop do rešitev povezljivosti v več kot 200 državah in regijah.',
-        link: 'https://www.airalo.com'
-      },
-      {
-        merchant: 'terme dobrna',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '20% popusta na bivanje s polpenzionom',
-        code: 'VISA20',
-        conditions: 'Rezervacija preko tel. 080 22 10 ali 03 78 08 110 ali info@terme-dobrna.si ali www.terme-dobrna.si z kodo VISA20; minimalno bivanje 2 noči; plačilo z Visa kartico; popusti se ne seštevajo; velja do 30.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'terme dobrna - spa storitve',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
-        code: null,
-        conditions: 'Velja na masaže, lepotne tretmaje obraza, dlani in stopal, depilacije, maderoterapijo, nego telesa, tretmaje trepalnic in obrvi ter ličenje; ne velja na paketne in akcijske ponudbe; velja do 29.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'ljubljanski grad',
-        domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
-        discount: '10% popusta na izbrana doživetja (Časovni stroj)',
-        code: null,
-        conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94, 041 732 654 ali virtualni-grad@ljubljanskigrad.si; velja do 31.12.2026.',
-        link: 'https://www.ljubljanskigrad.si/sl/izberi-dozivetje/casovni-stroj/'
-      },
-      {
-        merchant: 'amadria park',
-        domains: ['amadriapark.com', 'www.amadriapark.com'],
-        discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
-        code: 'AMPVISA',
-        conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
-        link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-      {
-        merchant: 'rimske terme',
-        domains: ['rimske-terme.si', 'www.rimske-terme.si'],
-        discount: '30% popusta na LUX PAKET',
-        code: null,
-        conditions: 'Rezervacija preko tel. 03 574 2000, 03 574 2011 ali booking@rimske-terme.si; luksuzna nastanitev z izbranimi storitvami; velja do 31.12.2026.',
-        link: 'https://www.rimske-terme.si'
-      },
-      {
-        merchant: 'airport lounges worldwide',
-        domains: ['dragonpass.com', 'loungekey.com'],
-        discount: 'Dostop do poslovnih salonov na letališčih - 2x letno',
-        code: null,
-        conditions: 'Velja do 30. 9. 2026.',
-        link: 'https://www.visa.com.ua/en_UA/pay-with-visa/promotions/airport-lounge-access.html'
-      },
-      {
-        merchant: 'visa concierge',
-        domains: [],
-        discount: '24/7 asistenčna služba',
-        code: null,
-        conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje.',
-        link: null
-      },
-      {
-        merchant: 'fast track services',
-        domains: [],
-        discount: 'Hitrejši prehod varnostnih kontrol na letališčih',
-        code: null,
-        conditions: 'Dostopno na izbranih mednarodnih letališčih.',
-        link: null
-      },
-      {
-        merchant: 'extended warranty',
-        domains: [],
-        discount: 'Podaljšano jamstvo na nakupe',
-        code: null,
-        conditions: 'Dodatno leto jamstva na izdelke.',
-        link: null
-      },
-      {
-        merchant: 'purchase protection',
-        domains: [],
-        discount: 'Zaščita nakupov',
-        code: null,
-        conditions: 'Kritje za poškodovano ali ukradeno blago.',
-        link: null
-      }
-    ],
-    'Visa Signature': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'avis',
-        domains: ['avisworld.com', 'www.avisworld.com'],
-        discount: 'Do 20% popusta + brezplačna nadgradnja + Avis Preferred Plus membership (brezplačno)',
-        code: null,
-        conditions: 'Rezervacija neposredno na Visa (avisworld.com); velja od 01.01.2022 do 31.12.2026.',
-        link: 'https://www.avisworld.com'
-      },
-      {
-        merchant: 'airalo',
-        domains: ['airalo.com', 'www.airalo.com'],
-        discount: '15% popusta na vse eSIM pakete',
-        code: 'VISA15-SLO',
-        conditions: 'Velja od 02.01.2025 do 31.12.2026; dostop do rešitev povezljivosti v več kot 200 državah in regijah.',
-        link: 'https://www.airalo.com'
-      },
-      {
-        merchant: 'terme dobrna',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '20% popusta na bivanje s polpenzionom',
-        code: 'VISA20',
-        conditions: 'Rezervacija preko tel. 080 22 10 ali 03 78 08 110 ali info@terme-dobrna.si ali www.terme-dobrna.si z kodo VISA20; minimalno bivanje 2 noči; plačilo z Visa kartico; popusti se ne seštevajo; velja do 30.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'terme dobrna - spa storitve',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
-        code: null,
-        conditions: 'Velja na masaže, lepotne tretmaje obraza, dlani in stopal, depilacije, maderoterapijo, nego telesa, tretmaje trepalnic in obrvi ter ličenje; ne velja na paketne in akcijske ponudbe; velja do 29.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'ljubljanski grad',
-        domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
-        discount: '10% popusta na izbrana doživetja (Časovni stroj)',
-        code: null,
-        conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94, 041 732 654 ali virtualni-grad@ljubljanskigrad.si; velja do 31.12.2026.',
-        link: 'https://www.ljubljanskigrad.si/sl/izberi-dozivetje/casovni-stroj/'
-      },
-      {
-        merchant: 'amadria park',
-        domains: ['amadriapark.com', 'www.amadriapark.com'],
-        discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
-        code: 'AMPVISA',
-        conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
-        link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-      {
-        merchant: 'rimske terme',
-        domains: ['rimske-terme.si', 'www.rimske-terme.si'],
-        discount: '30% popusta na LUX PAKET',
-        code: null,
-        conditions: 'Rezervacija preko tel. 03 574 2000, 03 574 2011 ali booking@rimske-terme.si; luksuzna nastanitev z izbranimi storitvami; velja do 31.12.2026.',
-        link: 'https://www.rimske-terme.si'
-      },
-      {
-        merchant: 'airport lounges worldwide',
-        domains: ['dragonpass.com', 'loungekey.com'],
-        discount: 'Dostop do poslovnih salonov na letališčih - 10x letno',
-        code: null,
-        conditions: 'Velja do 30. 9. 2026.',
-        link: 'https://www.visa.com.ua/en_UA/pay-with-visa/promotions/airport-lounge-access.html'
-      },
-      {
-        merchant: 'visa concierge',
-        domains: [],
-        discount: '24/7 asistenčna služba',
-        code: null,
-        conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje.',
-        link: null
-      },
-      {
-        merchant: 'travel insurance',
-        domains: [],
-        discount: 'Potovalno zavarovanje',
-        code: null,
-        conditions: 'Do 750.000 USD kritja; zavarovanje za zamude letov, izgubljeno prtljago.',
-        link: null
-      },
-      {
-        merchant: 'fast track services',
-        domains: [],
-        discount: 'Hitrejši prehod varnostnih kontrol na letališčih',
-        code: null,
-        conditions: 'Dostopno na izbranih mednarodnih letališčih.',
-        link: null
-      },
-      {
-        merchant: 'extended warranty',
-        domains: [],
-        discount: 'Podaljšano jamstvo na nakupe',
-        code: null,
-        conditions: 'Dodatno leto jamstva na izdelke.',
-        link: null
-      },
-      {
-        merchant: 'purchase protection',
-        domains: [],
-        discount: 'Zaščita nakupov',
-        code: null,
-        conditions: 'Kritje za poškodovano ali ukradeno blago.',
-        link: null
-      }
-    ],
-    'Visa Infinite': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'avis',
-        domains: ['avisworld.com', 'www.avisworld.com'],
-        discount: 'Do 20% popusta + brezplačna nadgradnja + Avis Preferred Plus membership (brezplačno)',
-        code: null,
-        conditions: 'Rezervacija neposredno na Visa (avisworld.com); velja od 01.01.2022 do 31.12.2026.',
-        link: 'https://www.avisworld.com'
-      },
-      {
-        merchant: 'airalo',
-        domains: ['airalo.com', 'www.airalo.com'],
-        discount: '15% popusta na vse eSIM pakete',
-        code: 'VISA15-SLO',
-        conditions: 'Velja od 02.01.2025 do 31.12.2026; dostop do rešitev povezljivosti v več kot 200 državah in regijah.',
-        link: 'https://www.airalo.com'
-      },
-      {
-        merchant: 'terme dobrna',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '20% popusta na bivanje s polpenzionom',
-        code: 'VISA20',
-        conditions: 'Rezervacija preko tel. 080 22 10 ali 03 78 08 110 ali info@terme-dobrna.si ali www.terme-dobrna.si z kodo VISA20; minimalno bivanje 2 noči; plačilo z Visa kartico; popusti se ne seštevajo; velja do 30.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'terme dobrna - spa storitve',
-        domains: ['terme-dobrna.si', 'www.terme-dobrna.si'],
-        discount: '10% popusta na storitve Masažno-lepotnega centra La Vita',
-        code: null,
-        conditions: 'Velja na masaže, lepotne tretmaje obraza, dlani in stopal, depilacije, maderoterapijo, nego telesa, tretmaje trepalnic in obrvi ter ličenje; ne velja na paketne in akcijske ponudbe; velja do 29.12.2026.',
-        link: 'https://www.terme-dobrna.si'
-      },
-      {
-        merchant: 'ljubljanski grad',
-        domains: ['ljubljanskigrad.si', 'www.ljubljanskigrad.si'],
-        discount: '10% popusta na izbrana doživetja (Časovni stroj)',
-        code: null,
-        conditions: 'Rezervacija najmanj 5 delovnih dni vnaprej na 01 232 99 94, 041 732 654 ali virtualni-grad@ljubljanskigrad.si; velja do 31.12.2026.',
-        link: 'https://www.ljubljanskigrad.si/sl/izberi-dozivetje/casovni-stroj/'
-      },
-      {
-        merchant: 'amadria park',
-        domains: ['amadriapark.com', 'www.amadriapark.com'],
-        discount: '15% popusta na Flexible cene za nočitev in zajtrk + do 10% na ostale redne cene',
-        code: 'AMPVISA',
-        conditions: 'Rezervacija preko uradnih spletnih strani; velja za hotele v Opatiji, Šibeniku in Zagrebu; velja med 01.05.2025 in 31.12.2026.',
-        link: 'https://www.amadriapark.com/hotel_category/all/'
-      },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-      {
-        merchant: 'rimske terme',
-        domains: ['rimske-terme.si', 'www.rimske-terme.si'],
-        discount: '30% popusta na LUX PAKET',
-        code: null,
-        conditions: 'Rezervacija preko tel. 03 574 2000, 03 574 2011 ali booking@rimske-terme.si; luksuzna nastanitev z izbranimi storitvami; velja do 31.12.2026.',
-        link: 'https://www.rimske-terme.si'
-      },
-      {
-        merchant: 'airport lounges worldwide',
-        domains: ['dragonpass.com', 'loungekey.com'],
-        discount: 'Neomejen dostop do poslovnih salonov na letališčih',
-        code: null,
-        conditions: 'Velja do 30. 9. 2026.',
-        link: 'https://www.visa.com.ua/en_UA/pay-with-visa/promotions/airport-lounge-access.html'
-      },
-      {
-        merchant: 'visa concierge',
-        domains: [],
-        discount: '24/7 premium asistenčna služba',
-        code: null,
-        conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje, osebni asistent.',
-        link: null
-      },
-      {
-        merchant: 'travel insurance',
-        domains: [],
-        discount: 'Celovito potovalno zavarovanje',
-        code: null,
-        conditions: 'Celovito kritje; zavarovanje za zamude letov, izgubljeno prtljago, medicinska kritja.',
-        link: null
-      },
-      {
-        merchant: 'fast track services',
-        domains: [],
-        discount: 'Hitrejši prehod varnostnih kontrol na letališčih',
-        code: null,
-        conditions: 'Dostopno na izbranih mednarodnih letališčih.',
-        link: null
-      },
-      {
-        merchant: 'extended warranty',
-        domains: [],
-        discount: 'Podaljšano jamstvo na nakupe',
-        code: null,
-        conditions: 'Dodatno leto jamstva na izdelke.',
-        link: null
-      },
-      {
-        merchant: 'purchase protection',
-        domains: [],
-        discount: 'Zaščita nakupov',
-        code: null,
-        conditions: 'Vrhunsko kritje za poškodovano ali ukradeno blago.',
-        link: null
-      }
-    ],
-    'Visa Business': [
-      {
-        merchant: 'booking.com',
-        domains: ['booking.com', 'www.booking.com'],
-        discount: '4% povračilo kot dobroimetje v Booking.com denarnico',
-        code: null,
-        conditions: 'Rezervacija in plačilo med 01.02.2026 in 30.06.2026; bivanje med 01.02.2026 in 30.06.2026; uporaba posebne povezave: https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll; dobroimetje se nakaže 64 dni po bivanju; maksimalno 200 EUR na rezervacijo; ne velja za predplačniške kartice za enkratno uporabo; ne velja za odpovedane rezervacije; izbrati "Plačaj zdaj" ali "Plačaj pozneje Booking.com".',
-        link: 'https://www.booking.com/gating/authkey?aid=8131429&key=Z6WIcn10Ll'
-      },
-      {
-        merchant: 'afrodita',
-        domains: ['afrodita.eu', 'www.afrodita.eu'],
-        discount: '10% popusta na izdelke Afrodita',
-        code: 'VISA-AFRODITA10',
-        conditions: 'Plačilo s katerokoli Visa OTP kartico; do 31. 12. 2026.',
-        link: 'https://www.otpbanka.si/visa-ugodnosti'
-      },
-      {
-        merchant: 'spleticna.si',
-        domains: ['spleticna.si', 'www.spleticna.si'],
-        discount: '10% popusta pri nakupu nad 99 EUR',
-        code: 'SPL10-VISA',
-        conditions: 'Velja do 31.12.2026; več kot 400 blagovnih znamk kozmetike.',
-        link: 'https://www.spleticna.si'
-      },
-      {
-        merchant: 'travelcentive',
-        domains: ['travelcentive.com', 'www.travelcentive.com'],
-        discount: '7% popusta na rezervacije potovanj in letov',
-        code: null,
-        conditions: 'Popust se samodejno uporabi; velja od 01.12.2025 do 31.12.2026.',
-        link: 'https://www.travelcentive.com'
-      },
-    ]
-  // Add more banks as needed
+    _visaConcierge,
+    {
+      merchant: 'travel insurance',
+      domains: [],
+      discount: 'Potovalno zavarovanje',
+      code: null,
+      conditions: 'Do 750.000 USD kritja; zavarovanje za zamude letov, izgubljeno prtljago.',
+      expires: null,
+      link: null
+    },
+    _fastTrack, _extendedWarranty, _purchaseProtection,
+    _impresiaHoteli, _hotelBohinj, _gourmetVilaMuhr, _hotelBellevue,
+    _villaGiardinoBol, _qushinPets, _freywille, _avg, _visaLuxuryHotel
+  ],
+
+  'Visa Infinite': [
+    _booking, _avis, _airalo, _termeDobrna, _termeDobrnaSpa,
+    _ljubljanskiGrad, _amadriaPark, _spleticna, _travelcentive,
+    _rimskeTreme,
+    {
+      merchant: 'airport lounges worldwide',
+      domains: ['dragonpass.com', 'loungekey.com'],
+      discount: 'Neomejen dostop do poslovnih salonov na letališčih',
+      code: null,
+      conditions: null,
+      expires: '2026-09-30',
+      link: null
+    },
+    {
+      merchant: 'visa concierge',
+      domains: [],
+      discount: '24/7 premium asistenčna služba',
+      code: null,
+      conditions: 'Rezervacije hotelov, restavracij, najem vozil, potovalno svetovanje, osebni asistent.',
+      expires: null,
+      link: null
+    },
+    {
+      merchant: 'travel insurance',
+      domains: [],
+      discount: 'Celovito potovalno zavarovanje',
+      code: null,
+      conditions: 'Celovito kritje; zavarovanje za zamude letov, izgubljeno prtljago, medicinska kritja.',
+      expires: null,
+      link: null
+    },
+    _fastTrack, _extendedWarranty,
+    {
+      merchant: 'purchase protection',
+      domains: [],
+      discount: 'Zaščita nakupov',
+      code: null,
+      conditions: 'Vrhunsko kritje za poškodovano ali ukradeno blago.',
+      expires: null,
+      link: null
+    },
+    _impresiaHoteli, _hotelBohinj, _gourmetVilaMuhr, _hotelBellevue,
+    _villaGiardinoBol, _qushinPets, _freywille, _avg, _visaLuxuryHotel
+  ],
+
+  'Visa Business': [
+    _booking, _afrodita, _spleticna, _travelcentive,
+    _hotelBohinj, _hotelBellevue, _avg, _visaLuxuryHotel,
+    {
+      merchant: 'časnik finance',
+      domains: ['finance.si', 'www.finance.si'],
+      discount: '35% popusta na naročnino Finance Poslovni',
+      code: null,
+      conditions: 'Samo za imetnike poslovnih kartic Visa.',
+      expires: null,
+      link: null
+    },
+    {
+      merchant: 'mimovrste',
+      domains: ['mimovrste.com', 'www.mimovrste.com'],
+      discount: '10% popusta na spletne nakupe',
+      code: 'VISA10BIZ526',
+      conditions: 'Plačilo s poslovno kartico Visa.',
+      expires: null,
+      link: null
+    },
+    {
+      merchant: 'google workspace',
+      domains: ['workspace.google.com', 'admin.google.com'],
+      discount: '25% popusta na Google Workspace Business Standard',
+      code: null,
+      conditions: 'Samo za nove uporabnike ali ob nadgradnji; koda na spletni strani; plačilo s poslovno kartico Visa.',
+      expires: '2026-07-31',
+      link: null
+    }
+  ]
 };
 
-// Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = BENEFITS_DATABASE;
 }

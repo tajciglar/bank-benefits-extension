@@ -1,9 +1,6 @@
 {
+  "_comment": "This is a stub for local development. For browser-ready builds, run: python3 scripts/build_extension.py — output goes to dist/chrome and dist/firefox.",
   "manifest_version": 3,
   "name": "Bank Card Benefits Notifier",
-  "version": "1.0.0",
-  "description": "Generated file. Use manifest.base.json plus manifests/*.json and run the build script.",
-  "background": {
-    "service_worker": "background.js"
-  }
+  "version": "1.0.0"
 }

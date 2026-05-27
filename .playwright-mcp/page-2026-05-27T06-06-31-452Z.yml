@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - banner "header" [ref=e2]:
+    - generic [ref=e3]:
+      - generic:
+        - link "Preskoči na vsebino":
+          - /url: "#skipTo"
+      - generic [ref=e5]:
+        - link "Visa Home" [ref=e7] [cursor=pointer]:
+          - /url: https://www.visaeurope.si/
+          - img "Visa Home" [ref=e8]
+        - generic [ref=e12]:
+          - navigation "Site" [ref=e13]:
+            - text:  
+            - list [ref=e14]:
+              - listitem [ref=e15]:
+                - button "Posamezniki" [ref=e16] [cursor=pointer]
+              - listitem [ref=e17]:
+                - button "Podjetja" [ref=e18] [cursor=pointer]
+              - listitem [ref=e19]:
+                - button "Inovatorji" [ref=e20] [cursor=pointer]
+              - listitem [ref=e21]:
+                - button "Vsi" [ref=e22] [cursor=pointer]
+          - generic [ref=e24]:
+            - button "Iščite na visaeurope.si" [ref=e25] [cursor=pointer]: 
+            - text: 
+      - text:  
+  - main:
+    - alert [ref=e26]
+  - contentinfo "footer":
+    - navigation "Vir za nogo" [ref=e28]:
+      - generic [ref=e29]:
+        - generic "footer" [ref=e31]:
+          - list [ref=e35]:
+            - listitem [ref=e36]:
+              - link "Pravne informacije" [ref=e37] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/pogoji-uporabe.html
+            - listitem [ref=e38]:
+              - link "Obvestilo o zasebnosti" [ref=e39] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/pogoji-uporabe/globalno-obvestilo-o-zasebnosti-visa.html
+            - listitem [ref=e40]:
+              - link "Nastavitve piškotkov (Odpri v novem oknu, Zunanja povezava)" [ref=e41] [cursor=pointer]:
+                - /url: https://policy.cookiereports.com/e5f9d5c6-sl-si.html
+                - text: Nastavitve piškotkov
+            - listitem [ref=e42]:
+              - link "Pravila Visa" [ref=e43] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/support/consumer/visa-rules.html
+        - paragraph [ref=e45]: © Avtorske pravice 1996 - 2026. Vse pravice pridržane.

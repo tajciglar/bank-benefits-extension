@@ -1,0 +1,181 @@
+- generic [active] [ref=e1]:
+  - banner "header" [ref=e2]:
+    - generic [ref=e3]:
+      - generic:
+        - link "Preskoči na vsebino":
+          - /url: "#skipTo"
+      - generic [ref=e5]:
+        - link "Visa Home" [ref=e7] [cursor=pointer]:
+          - /url: https://www.visaeurope.si/
+          - img "Visa Home" [ref=e8]
+        - generic [ref=e12]:
+          - navigation "Site" [ref=e13]:
+            - text:  
+            - list [ref=e14]:
+              - listitem [ref=e15]:
+                - button "Posamezniki" [ref=e16] [cursor=pointer]
+              - listitem [ref=e17]:
+                - button "Podjetja" [ref=e18] [cursor=pointer]
+              - listitem [ref=e19]:
+                - button "Inovatorji" [ref=e20] [cursor=pointer]
+              - listitem [ref=e21]:
+                - button "Vsi" [ref=e22] [cursor=pointer]
+          - generic [ref=e24]:
+            - button "Iščite na visaeurope.si" [ref=e25] [cursor=pointer]: 
+            - text: 
+      - text:  
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - alert [ref=e28]: IMPRESIA HOTELI | Offers | Visa Redeem Code
+      - generic [ref=e34]:
+        - region "IMPRESIA HOTELI's glava ponudbe" [ref=e35]:
+          - generic [ref=e36]: glava ponudbe
+          - generic [ref=e41]:
+            - generic [ref=e43]:
+              - heading "IMPRESIA HOTELI" [level=1] [ref=e44]
+              - paragraph [ref=e45]: Uživajte v edinstveni izkušnji v hotelih Impresia
+              - button "terms and conditions apply for IMPRESIA HOTELI" [ref=e46] [cursor=pointer]: Veljajo Pravila in pogoji
+            - region "IMPRESIA HOTELI's redemption details" [ref=e49]:
+              - paragraph [ref=e50]: To ponudbo lahko unovčite prek spleta.
+              - generic [ref=e51]:
+                - button "redeem IMPRESIA HOTELI's offer(external link, open new window)" [ref=e52] [cursor=pointer]:
+                  - text: Unovčite zdaj
+                  - generic [ref=e53]: 
+                - alert [ref=e54]
+                - generic "IMPRESIA HOTELI offer redemption code is VISAIMPRESIA" [ref=e55]: VISAIMPRESIA
+              - generic "go back to main list from IMPRESIA HOTELI" [ref=e56] [cursor=pointer]:
+                - text: Preglejte vso ponudbo
+                - generic [ref=e57]: 󨁻
+          - alert [ref=e58]
+          - region "merchant logo" [ref=e61]:
+            - img "IMPRESIA HOTELI Logotip trgovca" [ref=e62]
+        - generic [ref=e63]:
+          - generic [ref=e65]:
+            - region "IMPRESIA HOTELI" [ref=e67]:
+              - heading "Podrobnosti" [level=2] [ref=e69]
+              - paragraph [ref=e70]:
+                - paragraph [ref=e71]: Uživajte v edinstveni izkušnji v hotelih Impresia
+                - paragraph [ref=e72]: Doživite razkošje na novi ravni in postanite protagonist impresivnih in nepozabnih doživetij.
+                - paragraph [ref=e73]: Od očarljivih butičnih hotelov do zgodovinskih palač in ekskluzivnih otoških resortov – vsi predstavljeni hoteli ponujajo edinstveno kombinacijo razkošja, avtentičnosti in lokalnega značaja. Nahajajo se na najbolj slikovitih lokacijah – od središč zgodovinskih mest do mirnih otoških kotičkov. Gostom ponujajo brezhibno storitev, vrhunsko kulinariko, umetniško navdihnjeno okolje ter raznoliko arhitekturno in kulturno dediščino.
+                - paragraph [ref=e74]: "Ugodnosti, ki jih ponujajo hoteli ob plačilu z VISA kartico, vključujejo:"
+                - list [ref=e75]:
+                  - listitem [ref=e76]: Zgodnjo prijavo in pozno odjavo za več udobja
+                  - listitem [ref=e77]: Nadgradnjo sobe, pogosto že ob prihodu
+                  - listitem [ref=e78]: Dodatne ugodnosti, ki se lahko razlikujejo glede na posamezni hotel.
+                - paragraph [ref=e79]:
+                  - strong [ref=e80]: Odkrijte ekskluzivne ugodnosti vsakega hotela!
+                - paragraph [ref=e81]:
+                  - link "Za podrobnosti o posameznih hotelih obiščite povezavo IMPRESIA HOTELI's offer (external link, open new window)" [ref=e82] [cursor=pointer]:
+                    - /url: https://www.visaeurope.si/impresia.html
+                    - text: Za podrobnosti o posameznih hotelih obiščite povezavo 
+                - paragraph [ref=e83]: Ti hoteli so popolna izbira za goste, ki iščejo nekaj posebnega – edinstveno izkušnjo bivanja, ki združuje vrhunski dizajn, osebni pristop in lokalno zgodbo.
+                - paragraph [ref=e84]: Uporabite kartico Visa in kodo VISAIMPRESIA pri rezervaciji bivanja v izbranem hotelu Impresia, da pridobite dodatne ugodnosti.
+            - region "Ponudba velja od 1. maj 2025 00:00 GMT 30. junij 2027 23:59 GMT" [ref=e86]:
+              - paragraph [ref=e87]: Ponudba velja od 1. maj 2025 00:00 GMT - 30. junij 2027 23:59 GMT
+            - separator [ref=e89]
+            - region "IMPRESIA HOTELI's terms and conditions" [ref=e93]:
+              - heading "Pravila in pogoji" [level=3] [ref=e95]
+              - generic [ref=e96]:
+                - list [ref=e98]:
+                  - listitem [ref=e99]: Ugodnosti veljajo za vse imetnike kartic Visa Gold in Platinum in se lahko unovčijo do vključno 30.06.2027.
+                  - listitem [ref=e100]: Uporabite kartico Visa in kodo VISAIMPRESIA pri rezervaciji bivanja v izbranem hotelu Impresia, da pridobite dodatne ugodnosti.
+                - generic [ref=e101]:
+                  - paragraph [ref=e102]:
+                    - strong [ref=e103]: Pogoji uporabe družbe Visa
+                  - list [ref=e104]:
+                    - listitem [ref=e105]: Ugodnosti ponudnikov, med katerimi lahko izbirate, smo zbrali od ponudnikov po vsem svetu kot ugodnost za imetnike kartic Visa. Ugodnosti ponujajo posamezni ponudniki in ne Visa, ki izrecno zanika vsakršno odgovornost v zvezi z njihovo vsebino, skladnostjo z zakonodajo katere koli države ali njihovo izvršitvijo. Upoštevajte, da zanje veljajo pogoji uporabe posameznih ponudnikov, vključno s provizijami.
+          - generic [ref=e106]:
+            - region "IMPRESIA HOTELI's redeem section" [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e111]:
+                  - heading "Kako unovčiti ponudbo" [level=2] [ref=e112]
+                  - button "print IMPRESIA HOTELI's offer details" [ref=e113] [cursor=pointer]:
+                    - generic [ref=e114]: 󨎋
+                - generic [ref=e115]:
+                  - heading "To ponudbo lahko unovčite prek spleta." [level=3] [ref=e116]
+                  - paragraph [ref=e117]: Če želite to ponudbo izkoristiti prek spleta, kliknite spodnji gumb in ob nakupu vnesite promocijsko kodo, če je potrebna.
+                  - button "redeem IMPRESIA HOTELI's offer (external link, open new window)" [ref=e118] [cursor=pointer]:
+                    - text: Unovčite zdaj
+                    - generic [ref=e119]: 
+                - generic [ref=e120]:
+                  - heading "To ponudbo lahko unovčite v trgovini." [level=3] [ref=e121]
+                  - paragraph [ref=e122]: Če želite to ponudbo unovčiti v trgovini, pri blagajni pokažite kopijo te ponudbe (tiskano ali elektronsko) in navedite kodo.
+                  - generic "offer redemption code is VISAIMPRESIA" [ref=e123]: VISAIMPRESIA
+            - generic [ref=e126]:
+              - button "Share on Facebook" [ref=e127] [cursor=pointer]:
+                - generic [ref=e128]: 󨤚
+              - button "Post on X" [ref=e129] [cursor=pointer]:
+                - generic [ref=e130]: 󨤺
+              - button "Copied link to IMPRESIA HOTELI's offer" [ref=e131] [cursor=pointer]:
+                - generic [ref=e132]: 󩍑
+              - textbox [ref=e133]: https://www.visaeurope.si/sl_si/visa-offers-and-perks/impresia-hoteli/168906
+              - paragraph
+        - generic [ref=e135]:
+          - generic [ref=e137]:
+            - generic [ref=e138]: priporočene ponudbe
+            - heading "Povezane ponudbe" [level=2] [ref=e139]
+            - generic [ref=e140]:
+              - generic [ref=e144] [cursor=pointer]:
+                - generic [ref=e145]: .
+                - generic [ref=e150]:
+                  - heading "Ljubljanski grad" [level=3] [ref=e151]
+                  - list [ref=e154]:
+                    - listitem [ref=e155]: Visa Gold®
+                    - listitem [ref=e156]: Visa Platinum®
+                    - listitem [ref=e157]: Visa Classic®
+                  - link "Ljubljanski grad Z Viso 10 % cenejša izbrana doživetja na Ljubljanskem gradu." [ref=e158]:
+                    - /url: /sl_si/visa-offers-and-perks/ljubljanski-grad/174220
+                    - paragraph [ref=e159]: Z Viso 10 % cenejša izbrana doživetja na Ljubljanskem gradu. 
+              - generic [ref=e163] [cursor=pointer]:
+                - generic [ref=e164]: .
+                - generic [ref=e169]:
+                  - heading "Airalo" [level=3] [ref=e170]
+                  - list [ref=e173]:
+                    - listitem [ref=e174]: Visa Gold®
+                    - listitem [ref=e175]: Visa Platinum®
+                    - listitem [ref=e176]: Visa Infinite®
+                    - listitem [ref=e177]: Visa Business®
+                    - listitem [ref=e178]: Visa Classic®
+                  - link "Airalo Pridobite 15% popust na vse eSIM pakete pri Airalo" [ref=e179]:
+                    - /url: /sl_si/visa-offers-and-perks/airalo/165352
+                    - paragraph [ref=e180]: Pridobite 15% popust na vse eSIM pakete pri Airalo 
+              - generic [ref=e184] [cursor=pointer]:
+                - generic [ref=e185]: .
+                - generic [ref=e190]:
+                  - heading "Visa Luxury Hotel Collection" [level=3] [ref=e191]
+                  - list [ref=e194]:
+                    - listitem [ref=e195]: Visa Gold®
+                    - listitem [ref=e196]: Visa Platinum®
+                    - listitem [ref=e197]: Visa Business®
+                  - link "Visa Luxury Hotel Collection Raziščite svet z Viso in izkoristite ekskluzivne ugodnosti" [ref=e198]:
+                    - /url: /sl_si/visa-offers-and-perks/visa-luxury-hotel-collection/154486
+                    - paragraph [ref=e199]: Raziščite svet z Viso in izkoristite ekskluzivne ugodnosti 
+          - generic [ref=e202]:
+            - button "Share on Facebook" [ref=e203] [cursor=pointer]:
+              - generic [ref=e204]: 󨤚
+            - button "Post on X" [ref=e205] [cursor=pointer]:
+              - generic [ref=e206]: 󨤺
+            - button "Copied link to IMPRESIA HOTELI's offer" [ref=e207] [cursor=pointer]:
+              - generic [ref=e208]: 󩍑
+            - textbox [ref=e209]: https://www.visaeurope.si/sl_si/visa-offers-and-perks/impresia-hoteli/168906
+            - paragraph
+        - generic [ref=e210]: .
+  - contentinfo "footer":
+    - navigation "Vir za nogo" [ref=e212]:
+      - generic [ref=e213]:
+        - generic "footer" [ref=e215]:
+          - list [ref=e219]:
+            - listitem [ref=e220]:
+              - link "Pravne informacije" [ref=e221] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/pogoji-uporabe.html
+            - listitem [ref=e222]:
+              - link "Obvestilo o zasebnosti" [ref=e223] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/pogoji-uporabe/globalno-obvestilo-o-zasebnosti-visa.html
+            - listitem [ref=e224]:
+              - link "Nastavitve piškotkov (Odpri v novem oknu, Zunanja povezava)" [ref=e225] [cursor=pointer]:
+                - /url: https://policy.cookiereports.com/e5f9d5c6-sl-si.html
+                - text: Nastavitve piškotkov
+            - listitem [ref=e226]:
+              - link "Pravila Visa" [ref=e227] [cursor=pointer]:
+                - /url: https://www.visaeurope.si/support/consumer/visa-rules.html
+        - paragraph [ref=e229]: © Avtorske pravice 1996 - 2026. Vse pravice pridržane.

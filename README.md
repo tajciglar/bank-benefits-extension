@@ -1,235 +1,129 @@
-# Bank Card Benefits Notifier Extension
+# Bank Card Benefits Notifier
 
-Browser extension that automatically notifies you about available discounts when you visit supported websites. Users can select which banks they have cards from, and the extension will only show relevant benefits.
+Browser extension that notifies you about available discounts when you visit supported websites. Select which bank cards you have, and the extension shows relevant benefits as you browse.
+
+Built for Slovenian bank card users. All UI is in Slovenian.
 
 ## Features
 
-- 🔔 **Automatic Notifications**: Get notified when visiting websites with available discounts
-- 💳 **Multi-Bank Support**: Select multiple banks and see all your available benefits
-- 📋 **One-Click Code Copy**: Easily copy discount codes to clipboard
-- 🎨 **Beautiful UI**: Clean, modern interface with smooth animations
-- 🌐 **Slovenian Language**: Fully localized for Slovenian users
+- Automatic in-page notifications when visiting a merchant with a discount
+- Multi-bank and multi-card-tier support (OTP Banka, NLB, Visa Classic through Infinite)
+- One-click discount code copying
+- Automatic expiration filtering — expired benefits are hidden without manual cleanup
+- Once-per-session notifications (won't nag you on every page load)
+- Works on Chrome, Firefox, Edge, Brave, and Opera
 
 ## Installation
 
-### Build First
-
-Generate browser-specific bundles before loading the extension:
+### Build first
 
 ```bash
 python3 scripts/build_extension.py
 ```
 
-This creates:
+This creates `dist/chrome` and `dist/firefox`.
 
-- `dist/chrome`
-- `dist/firefox`
+### Chrome / Edge / Brave / Opera
 
-### For Chrome/Edge/Brave/Opera
+1. Open `chrome://extensions/` (or equivalent for your browser)
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select the `dist/chrome` folder
 
-1. Download or clone this repository
-2. Run `python3 scripts/build_extension.py`
-2. Open your browser and navigate to:
-   - **Chrome**: `chrome://extensions/`
-   - **Edge**: `edge://extensions/`
-   - **Brave**: `brave://extensions/`
-   - **Opera**: `opera://extensions`
+### Firefox
 
-3. Enable "Developer mode" (toggle in top-right corner)
-4. Click "Load unpacked"
-5. Select the `dist/chrome` folder
-6. The extension is now installed! 🎉
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click "Load Temporary Add-on"
+3. Select `dist/firefox/manifest.json`
 
-### For Firefox (Temporary Load)
+For a permanent Firefox install, package and sign the add-on via AMO.
 
-1. Download or clone this repository
-2. Run `python3 scripts/build_extension.py`
-2. Navigate to `about:debugging#/runtime/this-firefox`
-3. Click "Load Temporary Add-on"
-4. Choose `dist/firefox/manifest.json`
-5. The extension is now installed! 🎉
+### Safari (macOS)
 
-**Permanent Firefox install**: package and sign the add-on (AMO). Keep the `browser_specific_settings.gecko.id` value in `manifests/firefox.json` aligned with your published add-on ID.
+```bash
+xcrun safari-web-extension-converter .
+```
 
-### For Safari (macOS)
-
-Safari requires converting the extension to a Safari Web Extension using Xcode.
-
-1. Install Xcode
-2. Run `xcrun safari-web-extension-converter .` from the repo root
-3. Open the generated Xcode project
-4. Build and run the app target to enable the extension in Safari
+Then build and run the generated Xcode project.
 
 ## Usage
 
-### Initial Setup
+1. Click the extension icon and select your banks/card tiers
+2. Browse normally — when you visit a site with a matching benefit, a notification appears in the top-right corner
+3. Copy discount codes with one click
+4. Click "Preglej vse ugodnosti" in the popup to see all your active benefits
 
-1. Click the extension icon in your browser toolbar
-2. Select the banks where you have cards from:
-   - OTP Banka
-   - NLB
-   - SKB
-   - UniCredit
-   - (More banks can be added)
+## Current data
 
-3. Click on any bank to select/deselect it
-4. View total available benefits at the bottom
+| Source | Benefits |
+|--------|----------|
+| OTP Banka | 29 (scraped from otpbanka.si) |
+| NLB | 3 |
+| Visa Classic | 9 |
+| Visa Gold | 22 |
+| Visa Platinum | 24 |
+| Visa Signature | 25 |
+| Visa Infinite | 25 |
+| Visa Business | 11 |
 
-### Getting Notifications
+## Adding benefits
 
-1. Visit any supported website (e.g., bodifit.si, hervis.si, sportina.si)
-2. A notification will automatically appear in the top-right corner
-3. The notification shows:
-   - Bank name
-   - Discount details
-   - Discount code (if applicable)
-   - Conditions/requirements
-
-4. Click "Kopiraj" (Copy) to copy the discount code
-5. Use the code during checkout
-
-### Viewing All Benefits
-
-1. Click the extension icon
-2. Click "Preglej vse ugodnosti" (View all benefits)
-3. See a complete list of all benefits from your selected banks
-4. Each benefit shows merchant, discount, code, and conditions
-
-## Adding New Benefits
-
-To add new benefits, edit the `benefits.js` file:
+Edit `benefits.js`. Each benefit entry:
 
 ```javascript
-const BENEFITS_DATABASE = {
-  'OTP Banka': [
-    {
-      merchant: 'merchant-name',
-      domains: ['example.com', 'www.example.com'],
-      discount: 'Discount description',
-      code: 'DISCOUNTCODE',
-      conditions: 'Terms and conditions',
-      link: 'https://bank-website.com/benefits'
-    },
-    // Add more benefits...
-  ],
-  'Another Bank': [
-    // Add benefits for other banks...
-  ]
-};
+{
+  merchant: 'store name',
+  domains: ['example.com', 'www.example.com'],
+  discount: 'Discount description',
+  code: 'DISCOUNTCODE',   // or null
+  conditions: 'Terms',
+  expires: '2026-12-31',   // ISO date string, or null for no expiry
+  link: 'https://...'      // or null
+}
 ```
 
-## Scraping Benefits (Optional)
+Visa tier benefits that appear across multiple tiers are defined as shared objects at the top of the file (e.g., `_booking`, `_airalo`) and referenced by each tier array.
 
-You can scrape bank benefit pages into a JSON/JS file and then merge into `benefits.js`.
+### Scraping benefits
 
-1. Add your bank benefit URLs and selectors to `scripts/sources.json` (see `scripts/sources.example.json`).
-2. Install Python dependencies:
+The repo includes a Python scraper for extracting benefits from bank websites:
 
 ```bash
-python3 -m venv .venv
-. .venv/bin/activate
+python3 -m venv .venv && . .venv/bin/activate
 pip install -r scripts/requirements.txt
-```
-
-3. Run the scraper:
-
-```bash
 python scripts/scrape_benefits.py --config scripts/sources.json --output scripts/benefits.json
 ```
 
-Use `--format js` to output `const BENEFITS_DATABASE = ...` for easier manual merge.
+See `scripts/sources.example.json` for the config format.
 
-### Benefit Object Structure
-
-- `merchant`: Name of the merchant/store
-- `domains`: Array of domain names where the benefit applies
-- `discount`: Description of the discount
-- `code`: Discount code (optional)
-- `conditions`: Terms and conditions (optional)
-- `link`: Link to bank's benefits page (optional)
-
-## File Structure
+## File structure
 
 ```
-bank-benefits-extension/
 ├── manifest.base.json     # Shared manifest fields
-├── manifests/             # Browser-specific manifest overrides
-│   ├── chrome.json
-│   └── firefox.json
-├── manifest.json          # Lightweight local manifest stub
-├── background.js          # Service worker
+├── manifests/             # Browser-specific overrides (chrome.json, firefox.json)
+├── manifest.json          # Stub — not used directly, run the build script
+├── background.js          # Service worker / background script
 ├── benefits.js            # Benefits database
-├── content.js            # Content script (runs on web pages)
-├── notification.css      # Notification styles
-├── popup.html            # Extension popup HTML
-├── popup.css             # Extension popup styles
-├── popup.js              # Extension popup logic
-├── scripts/              # Scraper and build tools
-├── icons/                # Extension icons
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── dist/                 # Generated browser builds (ignored in git)
-└── README.md             # This file
+├── content.js             # Content script (notifications on web pages)
+├── notification.css       # Notification styles
+├── popup.html/css/js      # Extension popup UI
+├── scripts/               # Build and scraper tools
+├── icons/                 # Extension icons
+└── dist/                  # Generated browser builds (gitignored)
 ```
-
-## Current Supported Banks
-
-- **OTP Banka**: 3+ benefits (Bodifit, Hervis, Sportina, etc.)
-- **NLB**: Ready for benefits to be added
-- **SKB**: Ready for benefits to be added
-- **UniCredit**: Ready for benefits to be added
 
 ## Privacy
 
 - No data is sent to external servers
 - All data is stored locally in your browser
-- No tracking or analytics
-- No personal information is collected
-
-## Browser Compatibility
-
-- ✅ Chrome 88+
-- ✅ Edge 88+
-- ✅ Brave
-- ✅ Firefox 109+
-- ✅ Opera
-- ⚠️ Safari (via Xcode conversion)
+- No tracking, analytics, or personal data collection
 
 ## Contributing
 
-To add benefits for more banks or merchants:
-
-1. Fork this repository
-2. Edit `benefits.js` to add new benefits
-3. Test the extension
+1. Fork the repo
+2. Edit `benefits.js` to add/update benefits
+3. Run `python3 scripts/build_extension.py` and test in your browser
 4. Submit a pull request
-
-## Future Enhancements
-
-- [ ] Add more Slovenian banks
-- [ ] Support for international banks
-- [ ] Benefit expiration tracking
-- [ ] Statistics on savings
-- [ ] Browser notification support
-- [ ] Import/export settings
-- [ ] Cloud sync of selected banks
 
 ## License
 
-This project is open source and available for personal and commercial use.
-
-## Support
-
-For issues or questions:
-- Open an issue on GitHub
-- Check existing benefits at bank websites
-- Suggest new features
-
-## Credits
-
-Created for Slovenian bank card users to help them save money with available benefits.
-
----
-
-**Note**: Always verify discount codes on the merchant's website and read the terms and conditions before making a purchase.
+[MIT](LICENSE)
