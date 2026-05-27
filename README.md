@@ -1,4 +1,4 @@
-# Ugodnosti kartic
+# Card & Bank benefits / discounts
 
 > A browser extension that quietly tells you when the store you're on offers a discount for the bank cards you actually have.
 
