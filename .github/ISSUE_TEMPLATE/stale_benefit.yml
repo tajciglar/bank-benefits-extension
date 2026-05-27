@@ -1,0 +1,32 @@
+name: Stale or wrong benefit
+description: A benefit in the database is expired, has a wrong code, or is otherwise inaccurate
+labels: [data]
+body:
+  - type: input
+    id: bank
+    attributes:
+      label: Bank / card tier
+      placeholder: e.g. NLB, or Visa Gold
+    validations:
+      required: true
+  - type: input
+    id: merchant
+    attributes:
+      label: Merchant
+      placeholder: e.g. Booking.com
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's wrong
+      description: Expired? Code changed? Merchant moved? Discount amount different?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Link to the bank's official page showing the current state
+      placeholder: https://www.example-bank.si/benefits/...
+    validations:
+      required: false

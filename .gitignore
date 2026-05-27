@@ -6,3 +6,8 @@ __pycache__/
 scripts/sources.json
 .planning/
 .playwright-mcp/
+.vscode/
+.idea/
+.env
+.env.*
+node_modules/

@@ -1,0 +1,38 @@
+name: Bug report
+description: Something in the extension is broken
+labels: [bug]
+body:
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Edge
+        - Brave
+        - Opera
+        - Safari
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Browser version
+      placeholder: e.g. Firefox 122
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect, what actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser console output
+      description: Open the dev tools (F12) on the page where you saw the bug — paste any errors. Lines starting with `[bank-benefits]` are especially useful.
+      render: shell
